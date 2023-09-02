@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33502.453
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Morse_App_Edu", "Morse_App_Edu\Morse_App_Edu.csproj", "{71770972-F5E0-4CF5-8214-EC67023C0FFD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{71770972-F5E0-4CF5-8214-EC67023C0FFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71770972-F5E0-4CF5-8214-EC67023C0FFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71770972-F5E0-4CF5-8214-EC67023C0FFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71770972-F5E0-4CF5-8214-EC67023C0FFD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A6A97F67-FA3B-4B67-81EF-1C1E3A62D325}
+	EndGlobalSection
+EndGlobal
