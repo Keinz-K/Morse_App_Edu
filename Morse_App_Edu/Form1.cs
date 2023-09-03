@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -20,9 +21,11 @@ namespace Morse_App_Edu
         2023/8/21 :大体のUIの調整を完了。クイズモードに表示される符号の改装を開始。
                   :符号表示処理の改装を完了。以前の表示処理はコメント化して残している。。
         2023/9/3  :信号入力に伴う画像の生成機能の作成開始。併せて、使用フレームワークを.NET Freamwork 4.8 から 3.5に切り替えた。
+        2023/9/4  :画像生成機能の作成完了。3.5ではNet.httpの参照に問題が発生した。が現状ここを参照していない為問題ない。
      */
     public partial class Form1 : Form
     {
+        string Version = "1.0.1a";
         Morse morse = new Morse();
         //MorseEventhandler morseEventhandler = new MorseEventhandler();
         bool q_judge;
@@ -35,6 +38,10 @@ namespace Morse_App_Edu
         Bitmap diagram;
         Graphics morsecode;
         SolidBrush brush = new SolidBrush(Color.Blue);
+        Bitmap Code_image;
+        Graphics Code_image2;
+        SolidBrush Stripe = new SolidBrush(Color.Black);
+        //Pen Stripe = new Pen(Color.Black);
         public Form1()
         {
             InitializeComponent();
@@ -60,9 +67,17 @@ namespace Morse_App_Edu
             LocalTimeLabel1.Text = "只今の時間:" + h.ToString() + ":" + m.ToString() + ":" + s.ToString();
             //ApplicationMemory.Text = "現在の使用メモリサイズ :";//+ Process.GetCurrentProcess().ToString();
         }
+        private void Form1_Control_InitStatus()
+        {
+            //Loction
+
+
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
-            Text = "モールス符号早覚えゲーム(仮)";
+            Form1_Control_InitStatus();
+            Text = "モールス符号早覚えゲーム";
+            Title.Text = Text;
             Codeinput.Width = 350;
             MCode.BackColor = MCode.Parent.BackColor;
             Size defaultpanelsize = new Size(440, 270);
@@ -71,9 +86,6 @@ namespace Morse_App_Edu
             localtime.Start();
             GenePanel.Hide();
             Codeinput.Height = 45;
-            GenePanel.Location = Upperpanelpoint;
-            Quizpanel.Location = Upperpanelpoint;
-            TitlePanel.Location = Upperpanelpoint;
             Quizpanel.Hide();
             Debugger.Hide();
             ImeMode = ImeMode.Alpha;
@@ -90,12 +102,17 @@ namespace Morse_App_Edu
             GenerateOrSave.Location = new Point(40, 100);
             ResetCode.Location = new Point(40, 120);
             Play.Location = new Point(40, 140);
+            Generate_Image.Location = new Point(40, 160);
             NextQuestion();
             morse.HorizonalAlignUserValue(Understand, 0.33f, 150);
             morse.HorizonalAlignUserValue(Dontunderstand, 0.66f, 150);
             MCode.Height = 10;
             morse.HorizonalAlignCenter(MCode, 120);
             MCode.Visible = false;
+            GenePanel.Location = Upperpanelpoint;
+            Quizpanel.Location = Upperpanelpoint;
+            pictureBox1.Size = new Size(100, 100);
+            saveFileDialog1.InitialDirectory = morse.DesktopFilepath;
         }
         private void MorseTable_Click(object sender, EventArgs e)
         {
@@ -309,7 +326,7 @@ namespace Morse_App_Edu
         }
         private void Other_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("バージョン:1.0.0a\n作成者:keinz\n", "Application information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("バージョン:" + Version + "\n作成者:keinz\n", "Version info", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         private void ReferenceMorseTable_Click(object sender, EventArgs e)
         {
@@ -322,6 +339,7 @@ namespace Morse_App_Edu
         }
         private void GenerateOrSave_Click(object sender, EventArgs e)
         {
+            SaveDialog_DefaultSetting();
             int i, j;
             string Fpath, Content, Convert_content;
             char[] C;
@@ -336,8 +354,6 @@ namespace Morse_App_Edu
             Content = Codeinput.Text;
             //確認用
             C = new char[j];
-            //MessageBox.Show(j.ToString());
-            //MessageBox.Show(Fpath.ToString());
             using (stream = new StreamWriter(Fpath, false, Encoding.UTF8))//ファイルの上書き作成
             {
             }
@@ -352,6 +368,93 @@ namespace Morse_App_Edu
                     stream.Write(Convert_content + " ");
                 }
             }
+
+        }
+        private void SaveDialog_DefaultSetting()
+        {
+            saveFileDialog1.FileName = "output";
+            saveFileDialog1.DefaultExt = "txt";
+            saveFileDialog1.Filter = "テキスト|*.txt*";
+        }
+        private void SaveDialog_ImageSetting()
+        {
+            saveFileDialog1.FileName = "output";
+
+            saveFileDialog1.DefaultExt = "png";
+            saveFileDialog1.Filter = "PNG|*.png*";
+        }
+        private void Generate_Image_Click(object sender, EventArgs e)//入力に応じた画像を生成する処理
+        {
+            SaveDialog_ImageSetting();
+            int i, j, k;
+            string Content, Convert_content;
+            int locate_origin = 0;
+            int len;
+            char[] C;
+            DialogResult result;
+            result = saveFileDialog1.ShowDialog();//このタイミングでプロセスメモリが一様に増加している。
+            if (result == DialogResult.Cancel)//OK以外を選択したとき(エラー処理)
+            {
+                return;
+            }
+            j = Codeinput.Text.Length;
+            Content = Codeinput.Text;
+            //確認用
+            C = new char[j];
+            char[] C_2;
+            for (i = 1; i <= j; i++)//PIctureboxのWidth値の計上
+            {
+                C[i - 1] = Convert.ToChar(morse.Left(morse.Right(Content, 1 + j - i), 1));//複雑さ増しているような
+                Convert_content = morse.MorseCode(C[i - 1]);
+                len = Convert_content.Length;
+                C_2 = new char[len];
+                for (k = 1; k <= len; k++)
+                {
+
+                    C_2[k - 1] = Convert.ToChar(Convert_content.Substring(k - 1, 1));
+                    if (C_2[k - 1] == '.')
+                    {
+                        locate_origin += 1;
+                    }
+                    else if (C_2[k - 1] == '-')
+                    {
+                        locate_origin += 3;
+                    }
+                    if (k != len) locate_origin += 1;
+                }
+                locate_origin += 3;
+            }
+            pictureBox1.Width = locate_origin;
+            locate_origin = 0;
+            Code_image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+            Code_image2 = Graphics.FromImage(Code_image);
+
+            for (i = 1; i <= j; i++)//描画処理
+            {
+                C[i - 1] = Convert.ToChar(morse.Left(morse.Right(Content, 1 + j - i), 1));//複雑さ増しているような
+                Convert_content = morse.MorseCode(C[i - 1]);
+                len = Convert_content.Length;
+                C_2 = new char[len];
+                for (k = 1; k <= len; k++)
+                {
+
+                    C_2[k - 1] = Convert.ToChar(Convert_content.Substring(k - 1, 1));
+                    if (C_2[k - 1] == '.')
+                    {
+                        Code_image2.FillRectangle(Stripe, locate_origin, -1, 1, pictureBox1.Height + 1);
+                        locate_origin += 1;
+                    }
+                    else if (C_2[k - 1] == '-')
+                    {
+                        Code_image2.FillRectangle(Stripe, locate_origin, -1, 3, pictureBox1.Height + 1); ;
+                        locate_origin += 3;
+                    }
+                    if (k != len)locate_origin += 1;
+                }
+                locate_origin += 3;
+            }
+            pictureBox1.Image = Code_image;
+            Code_image.Save(saveFileDialog1.FileName, ImageFormat.Png);
 
         }
         private void Play_Click(object sender, EventArgs e)

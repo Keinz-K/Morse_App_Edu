@@ -56,6 +56,7 @@
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.TitlePanel = new System.Windows.Forms.Panel();
             this.Quizpanel = new System.Windows.Forms.Panel();
+            this.MCode = new System.Windows.Forms.PictureBox();
             this.Debugger = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.Dontunderstand = new System.Windows.Forms.Label();
@@ -65,7 +66,8 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.Question = new System.Windows.Forms.Label();
             this.Dakenrensyuu = new System.Windows.Forms.Panel();
-            this.MCode = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.Generate_Image = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
@@ -73,6 +75,7 @@
             this.TitlePanel.SuspendLayout();
             this.Quizpanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MCode)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // Title
@@ -96,7 +99,7 @@
             this.Other});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(800, 27);
+            this.toolStrip1.Size = new System.Drawing.Size(800, 31);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -109,7 +112,7 @@
             this.Recognize.Image = ((System.Drawing.Image)(resources.GetObject("Recognize.Image")));
             this.Recognize.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.Recognize.Name = "Recognize";
-            this.Recognize.Size = new System.Drawing.Size(54, 24);
+            this.Recognize.Size = new System.Drawing.Size(54, 28);
             this.Recognize.Text = "知る";
             // 
             // WikipediaLink
@@ -225,11 +228,12 @@
             // 
             // GenePanel
             // 
+            this.GenePanel.Controls.Add(this.Generate_Image);
             this.GenePanel.Controls.Add(this.ResetCode);
             this.GenePanel.Controls.Add(this.Play);
             this.GenePanel.Controls.Add(this.GenerateOrSave);
             this.GenePanel.Controls.Add(this.Codeinput);
-            this.GenePanel.Location = new System.Drawing.Point(474, 51);
+            this.GenePanel.Location = new System.Drawing.Point(486, 105);
             this.GenePanel.Name = "GenePanel";
             this.GenePanel.Size = new System.Drawing.Size(314, 230);
             this.GenePanel.TabIndex = 7;
@@ -260,9 +264,9 @@
             this.GenerateOrSave.AutoSize = true;
             this.GenerateOrSave.Location = new System.Drawing.Point(38, 90);
             this.GenerateOrSave.Name = "GenerateOrSave";
-            this.GenerateOrSave.Size = new System.Drawing.Size(77, 15);
+            this.GenerateOrSave.Size = new System.Drawing.Size(133, 15);
             this.GenerateOrSave.TabIndex = 1;
-            this.GenerateOrSave.Text = "生成(保存)";
+            this.GenerateOrSave.Text = "テキストを生成(保存)";
             this.GenerateOrSave.Click += new System.EventHandler(this.GenerateOrSave_Click);
             // 
             // Codeinput
@@ -311,6 +315,16 @@
             this.Quizpanel.Name = "Quizpanel";
             this.Quizpanel.Size = new System.Drawing.Size(499, 228);
             this.Quizpanel.TabIndex = 8;
+            // 
+            // MCode
+            // 
+            this.MCode.BackColor = System.Drawing.Color.White;
+            this.MCode.Location = new System.Drawing.Point(71, 183);
+            this.MCode.Margin = new System.Windows.Forms.Padding(0);
+            this.MCode.Name = "MCode";
+            this.MCode.Size = new System.Drawing.Size(255, 38);
+            this.MCode.TabIndex = 6;
+            this.MCode.TabStop = false;
             // 
             // Debugger
             // 
@@ -400,27 +414,37 @@
             this.Dakenrensyuu.Visible = false;
             this.Dakenrensyuu.Click += new System.EventHandler(this.Dakenrensyuu_Click);
             // 
-            // MCode
+            // pictureBox1
             // 
-            this.MCode.BackColor = System.Drawing.Color.White;
-            this.MCode.Location = new System.Drawing.Point(71, 183);
-            this.MCode.Margin = new System.Windows.Forms.Padding(0);
-            this.MCode.Name = "MCode";
-            this.MCode.Size = new System.Drawing.Size(255, 38);
-            this.MCode.TabIndex = 6;
-            this.MCode.TabStop = false;
+            this.pictureBox1.Location = new System.Drawing.Point(444, 39);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(100, 50);
+            this.pictureBox1.TabIndex = 10;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Visible = false;
+            // 
+            // Generate_Image
+            // 
+            this.Generate_Image.AutoSize = true;
+            this.Generate_Image.Location = new System.Drawing.Point(44, 191);
+            this.Generate_Image.Name = "Generate_Image";
+            this.Generate_Image.Size = new System.Drawing.Size(118, 15);
+            this.Generate_Image.TabIndex = 11;
+            this.Generate_Image.Text = "画像を生成(保存)";
+            this.Generate_Image.Click += new System.EventHandler(this.Generate_Image_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.Dakenrensyuu);
-            this.Controls.Add(this.Quizpanel);
             this.Controls.Add(this.TitlePanel);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.GenePanel);
+            this.Controls.Add(this.Quizpanel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.ImeMode = System.Windows.Forms.ImeMode.Alpha;
             this.MaximizeBox = false;
@@ -441,6 +465,7 @@
             this.Quizpanel.ResumeLayout(false);
             this.Quizpanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MCode)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -484,6 +509,8 @@
         private System.Windows.Forms.TextBox Codeinput;
         private System.Windows.Forms.Timer localtime;
         private System.Windows.Forms.PictureBox MCode;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label Generate_Image;
     }
 }
 
