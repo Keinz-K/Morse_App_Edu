@@ -95,6 +95,7 @@ namespace Morse_App_Edu
             morse.HorizonalAlignUserValue(Dontunderstand, 0.66f, 150);
             MCode.Height = 10;
             morse.HorizonalAlignCenter(MCode, 120);
+            MCode.Visible = false;
         }
         private void MorseTable_Click(object sender, EventArgs e)
         {
@@ -195,12 +196,12 @@ namespace Morse_App_Edu
         }
         private void Dontunderstand_Click(object sender, EventArgs e)
         {
-            if (q_judge == true)
+            if (MCode.Visible == true)//(q_judge == true)
             {
                 MCode.Visible = false;
                 NextQuestion();
             }
-            else if (q_judge == false)//pictureboxによる描画に処理を切り替える
+            else if (MCode.Visible == false)//(q_judge == false)//pictureboxによる描画に処理を切り替える
             {
                 MCode.Visible = true;
                 char code = Convert.ToChar(Question.Text);
@@ -292,6 +293,7 @@ namespace Morse_App_Edu
         }
         private void Understand_Click(object sender, EventArgs e)
         {
+            MCode.Visible = false;
             if (q_judge == true)
             {
                 NextQuestion();
@@ -338,7 +340,6 @@ namespace Morse_App_Edu
             //MessageBox.Show(Fpath.ToString());
             using (stream = new StreamWriter(Fpath, false, Encoding.UTF8))//ファイルの上書き作成
             {
-                /*writer.WriteLine("AAAAAAAAAAAAAAA");*/
             }
             for (i = 1; i <= j; i++)
             {
