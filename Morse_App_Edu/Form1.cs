@@ -19,6 +19,7 @@ namespace Morse_App_Edu
                   :主要機能の最低限の実装を完了。今後当分はUIの調整や未解決要素の解明を中心に追加する。
         2023/8/21 :大体のUIの調整を完了。クイズモードに表示される符号の改装を開始。
                   :符号表示処理の改装を完了。以前の表示処理はコメント化して残している。。
+        2023/9/3  :信号入力に伴う画像の生成機能の作成開始。併せて、使用フレームワークを.NET Freamwork 4.8 から 3.5に切り替えた。
      */
     public partial class Form1 : Form
     {
@@ -27,7 +28,6 @@ namespace Morse_App_Edu
         bool q_judge;
         Stopwatch stopwatch = new Stopwatch();
         //Stopwatch Stopwatch_morse = new Stopwatch();
-        StreamWriter writer;
         StreamWriter stream;
         Point Upperpanelpoint = new Point(0, 20);
         string Content_1, Content_2;
@@ -336,7 +336,7 @@ namespace Morse_App_Edu
             C = new char[j];
             //MessageBox.Show(j.ToString());
             //MessageBox.Show(Fpath.ToString());
-            using (writer = new StreamWriter(Fpath, false, Encoding.UTF8))//ファイルの上書き作成
+            using (stream = new StreamWriter(Fpath, false, Encoding.UTF8))//ファイルの上書き作成
             {
                 /*writer.WriteLine("AAAAAAAAAAAAAAA");*/
             }
