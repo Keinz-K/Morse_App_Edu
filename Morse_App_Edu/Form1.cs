@@ -325,35 +325,24 @@ namespace Morse_App_Edu
         private void GenerateOrSave_Click(object sender, EventArgs e)
         {
             SaveDialog_DefaultSetting();
-            int i, j;
-            string Fpath, Convert_content;
+            int i;
             char[] C;
-            DialogResult result;
-            result = saveFileDialog1.ShowDialog();//このタイミングでプロセスメモリが一様に増加している。
+            DialogResult result = saveFileDialog1.ShowDialog();//このタイミングでプロセスメモリが一様に増加している。
             if (result == DialogResult.Cancel)//OK以外を選択したとき(エラー処理)
             {
                 return;
             }
-            Fpath = saveFileDialog1.FileName;//選択したパスが返
-            j = Codeinput.Text.Length;
-            //Content = Codeinput.Text;
-            //確認用
-            C = new char[j];
-            using (stream = new StreamWriter(Fpath, false, Encoding.UTF8))//ファイルの上書き作成
+            C = Codeinput.Text.ToCharArray();
+            using (stream = new StreamWriter(saveFileDialog1.FileName, false, Encoding.UTF8))//ファイルの上書き作成
             {
             }
-            for (i = 1; i <= j; i++)
+            for (i = 1; i <= Codeinput.TextLength; i++)
             {
-                C[i - 1] = Convert.ToChar(morse.Left(morse.Right(Codeinput.Text, 1 + j - i), 1));//複雑さ増しているような
-                //確認用
-                //MessageBox.Show(C[i - 1].ToString());
-                using (stream = new StreamWriter(Fpath, true, Encoding.UTF8))//ファイルに追記
+                using (stream = new StreamWriter(saveFileDialog1.FileName, true, Encoding.UTF8))//ファイルに追記
                 {
-                    Convert_content = morse.MorseCode(C[i - 1]);
-                    stream.Write(Convert_content + " ");
+                    stream.Write(morse.MorseCode(C[i - 1]) + " ");
                 }
             }
-
         }
         private void SaveDialog_DefaultSetting()
         {
@@ -376,25 +365,21 @@ namespace Morse_App_Edu
             int locate_origin = 0;
             int len;
             char[] C;
-            DialogResult result;
-            result = saveFileDialog1.ShowDialog();//このタイミングでプロセスメモリが一様に増加している。
+            DialogResult result = saveFileDialog1.ShowDialog();//このタイミングでプロセスメモリが一様に増加している。
             if (result == DialogResult.Cancel)//OK以外を選択したとき(エラー処理)
             {
                 return;
             }
             j = Codeinput.TextLength;
             //確認用
-            C = new char[j];
+            C = Codeinput.Text.ToCharArray();
             char[] C_2;
             for (i = 1; i <= j; i++)//PIctureboxのWidth値の計上
             {
-                C[i - 1] = Convert.ToChar(morse.Left(morse.Right(Codeinput.Text, 1 + j - i), 1));//複雑さ増しているような
                 Convert_content = morse.MorseCode(C[i - 1]);
-                C_2 = new char[Convert_content.Length];
+                C_2 = Convert_content.ToCharArray();
                 for (k = 1; k <= Convert_content.Length; k++)
                 {
-
-                    C_2[k - 1] = Convert.ToChar(Convert_content.Substring(k - 1, 1));
                     if (C_2[k - 1] == '.')
                     {
                         locate_origin += 1;
@@ -411,17 +396,14 @@ namespace Morse_App_Edu
             locate_origin = 0;
             Code_image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             Code_image2 = Graphics.FromImage(Code_image);
-
             Code_image2.FillRectangle(Back, -1, -1, pictureBox1.Width + 1, pictureBox1.Height + 1);
             for (i = 1; i <= j; i++)//描画処理
             {
-                C[i - 1] = Convert.ToChar(morse.Left(morse.Right(Codeinput.Text, 1 + j - i), 1));//複雑さ増しているような
                 Convert_content = morse.MorseCode(C[i - 1]);
                 len = Convert_content.Length;
                 C_2 = new char[len];
                 for (k = 1; k <= Convert_content.Length; k++)
                 {
-
                     C_2[k - 1] = Convert.ToChar(Convert_content.Substring(k - 1, 1));
                     if (C_2[k - 1] == '.')
                     {
@@ -439,14 +421,7 @@ namespace Morse_App_Edu
             }
             pictureBox1.Image = Code_image;
             Code_image.Save(saveFileDialog1.FileName, ImageFormat.Png);
-
         }
-
-        private void TitlePanel_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
         private void Play_Click(object sender, EventArgs e)
         {
             morse.Play_Click(Codeinput.Text);

@@ -308,7 +308,6 @@
             this.TitlePanel.Name = "TitlePanel";
             this.TitlePanel.Size = new System.Drawing.Size(427, 326);
             this.TitlePanel.TabIndex = 4;
-            this.TitlePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.TitlePanel_Paint);
             // 
             // Quizpanel
             // 
