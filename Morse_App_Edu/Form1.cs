@@ -228,15 +228,12 @@ namespace Morse_App_Edu
                 string str = morse.MorseCode(code);
 
                 //符号に対応する文字列に応じてpictureboxのimageを再描画させる処理
-
-                char[] chars1 = new char[str.Length];
+                char[] chars1 = str.ToCharArray();
                 int a;
                 int widthpoint = 0;//文字に応じたpictureboxのwidthを計上する変数
                 int letteroffset = 20;
-
                 for (a = 1; a <= str.Length; a++)
                 {
-                    chars1[a - 1] = Convert.ToChar(morse.Left(morse.Right(str, 1 + str.Length - a), 1));
                     if (chars1[a - 1] == '.')
                     {
                         widthpoint += 10;
@@ -283,7 +280,6 @@ namespace Morse_App_Edu
                 q_judge = true;
                 //morse.Play_Click(code.ToString());//CとNを交互に連打したとき描画が止まり音声再生処理だけが動いている。
             }
-            //Debugger.Text = q_judge.ToString();
         }
         private void NextQuestion()
         {
@@ -378,13 +374,13 @@ namespace Morse_App_Edu
             {
                 Convert_content = morse.MorseCode(C[i - 1]);
                 C_2 = Convert_content.ToCharArray();
-                for (k = 1; k <= Convert_content.Length; k++)
+                for (k = 0; k <= Convert_content.Length - 1; k++)
                 {
-                    if (C_2[k - 1] == '.')
+                    if (C_2[k] == '.')
                     {
                         locate_origin += 1;
                     }
-                    else if (C_2[k - 1] == '-')
+                    else if (C_2[k] == '-')
                     {
                         locate_origin += 3;
                     }
@@ -401,10 +397,9 @@ namespace Morse_App_Edu
             {
                 Convert_content = morse.MorseCode(C[i - 1]);
                 len = Convert_content.Length;
-                C_2 = new char[len];
+                C_2 = Convert_content.ToCharArray();
                 for (k = 1; k <= Convert_content.Length; k++)
                 {
-                    C_2[k - 1] = Convert.ToChar(Convert_content.Substring(k - 1, 1));
                     if (C_2[k - 1] == '.')
                     {
                         Code_image2.FillRectangle(Stripe, locate_origin, -1, 1, pictureBox1.Height + 1);
