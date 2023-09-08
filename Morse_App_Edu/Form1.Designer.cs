@@ -49,6 +49,7 @@
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.GenePanel = new System.Windows.Forms.Panel();
+            this.Generate_Image = new System.Windows.Forms.Label();
             this.ResetCode = new System.Windows.Forms.Label();
             this.Play = new System.Windows.Forms.Label();
             this.GenerateOrSave = new System.Windows.Forms.Label();
@@ -67,7 +68,6 @@
             this.Question = new System.Windows.Forms.Label();
             this.Dakenrensyuu = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.Generate_Image = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
@@ -99,7 +99,7 @@
             this.Other});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(800, 31);
+            this.toolStrip1.Size = new System.Drawing.Size(800, 27);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -112,7 +112,7 @@
             this.Recognize.Image = ((System.Drawing.Image)(resources.GetObject("Recognize.Image")));
             this.Recognize.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.Recognize.Name = "Recognize";
-            this.Recognize.Size = new System.Drawing.Size(54, 28);
+            this.Recognize.Size = new System.Drawing.Size(54, 24);
             this.Recognize.Text = "知る";
             // 
             // WikipediaLink
@@ -238,6 +238,16 @@
             this.GenePanel.Size = new System.Drawing.Size(314, 230);
             this.GenePanel.TabIndex = 7;
             // 
+            // Generate_Image
+            // 
+            this.Generate_Image.AutoSize = true;
+            this.Generate_Image.Location = new System.Drawing.Point(44, 191);
+            this.Generate_Image.Name = "Generate_Image";
+            this.Generate_Image.Size = new System.Drawing.Size(118, 15);
+            this.Generate_Image.TabIndex = 11;
+            this.Generate_Image.Text = "画像を生成(保存)";
+            this.Generate_Image.Click += new System.EventHandler(this.Generate_Image_Click);
+            // 
             // ResetCode
             // 
             this.ResetCode.AutoSize = true;
@@ -298,6 +308,7 @@
             this.TitlePanel.Name = "TitlePanel";
             this.TitlePanel.Size = new System.Drawing.Size(427, 326);
             this.TitlePanel.TabIndex = 4;
+            this.TitlePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.TitlePanel_Paint);
             // 
             // Quizpanel
             // 
@@ -422,16 +433,6 @@
             this.pictureBox1.TabIndex = 10;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Visible = false;
-            // 
-            // Generate_Image
-            // 
-            this.Generate_Image.AutoSize = true;
-            this.Generate_Image.Location = new System.Drawing.Point(44, 191);
-            this.Generate_Image.Name = "Generate_Image";
-            this.Generate_Image.Size = new System.Drawing.Size(118, 15);
-            this.Generate_Image.TabIndex = 11;
-            this.Generate_Image.Text = "画像を生成(保存)";
-            this.Generate_Image.Click += new System.EventHandler(this.Generate_Image_Click);
             // 
             // Form1
             // 

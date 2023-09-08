@@ -33,7 +33,7 @@ namespace Morse_App_Edu
         //Stopwatch Stopwatch_morse = new Stopwatch();
         StreamWriter stream;
         Point Upperpanelpoint = new Point(0, 20);
-        string Content_1, Content_2;
+        string Content_2;
         Size Defaultformsize = new Size(450, 350);
         Bitmap diagram;
         Graphics morsecode;
@@ -41,6 +41,7 @@ namespace Morse_App_Edu
         Bitmap Code_image;
         Graphics Code_image2;
         SolidBrush Stripe = new SolidBrush(Color.Black);
+        SolidBrush Back = new SolidBrush(Color.White);
         //Pen Stripe = new Pen(Color.Black);
         public Form1()
         {
@@ -120,7 +121,12 @@ namespace Morse_App_Edu
         }
         private void Title_Click(object sender, EventArgs e)//開発進捗()
         {
-            MessageBox.Show("現在開発中です。", "お知らせ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            char[] a;
+            string b = "abcde";
+            a = b.ToCharArray();
+
+            MessageBox.Show(a.Length.ToString() + "\n" + a[0].ToString() + "\n" + a[1].ToString());
+            //MessageBox.Show("現在開発中です。", "お知らせ", MessageBoxButtons.OK, MessageBoxIcon.Information);
             //MessageBox.Show(Stopwatch.GetTimestamp().ToString());
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)//試用:押下していた時間を計測
@@ -184,19 +190,16 @@ namespace Morse_App_Edu
         }
         private void textBox1_TextChanged(object sender, EventArgs e)//2行二渡ったところで1行に補正する
         {
-            int len = Codeinput.Text.Length;
-            Content_1 = Codeinput.Text;
             int[] a;
-            a = new int[len];
+            a = new int[Codeinput.TextLength];
             char[] content;
-            content = new char[len];
             int i;
-            for (i = 1; i <= len; i++)
+            content = Codeinput.Text.ToCharArray();
+            for (i = 0; i <= content.Length - 1; i++)
             {
-                content[i - 1] = Convert.ToChar(Content_1.Substring(i - 1, 1));
-                a[i - 1] = content[i - 1];
+                a[i] = content[i];
             }
-            for (i = 0; i <= len - 1; i++)
+            for (i = 0; i <= Codeinput.TextLength - 1; i++)
             {
                 if (a[i] == 13)
                 {
@@ -226,15 +229,14 @@ namespace Morse_App_Edu
 
                 //符号に対応する文字列に応じてpictureboxのimageを再描画させる処理
 
-                int len = str.Length;
-                char[] chars1 = new char[len];
+                char[] chars1 = new char[str.Length];
                 int a;
                 int widthpoint = 0;//文字に応じたpictureboxのwidthを計上する変数
                 int letteroffset = 20;
 
-                for (a = 1; a <= len; a++)
+                for (a = 1; a <= str.Length; a++)
                 {
-                    chars1[a - 1] = Convert.ToChar(morse.Left(morse.Right(str, 1 + len - a), 1));
+                    chars1[a - 1] = Convert.ToChar(morse.Left(morse.Right(str, 1 + str.Length - a), 1));
                     if (chars1[a - 1] == '.')
                     {
                         widthpoint += 10;
@@ -243,7 +245,7 @@ namespace Morse_App_Edu
                     {
                         widthpoint += 30;
                     }
-                    if (a == len)
+                    if (a == str.Length)
                     {
                         continue;
                     }
@@ -258,7 +260,7 @@ namespace Morse_App_Edu
                 diagram = new Bitmap(MCode.Width, MCode.Height);
                 morsecode = Graphics.FromImage(diagram);
                 int origin = 0;
-                for (a = 1; a <= len; a++)
+                for (a = 1; a <= str.Length; a++)
                 {
                     if (chars1[a - 1] == '.')
                     {
@@ -276,23 +278,6 @@ namespace Morse_App_Edu
                 }
                 MCode.Image = diagram;
                 //morsecode.Dispose();
-
-                /*
-                //strの文字間にスペースを入れる処理
-                //int len = str.Length;
-                string c = " ";
-                int i;
-                char[] chars = new char[len];
-                string fstr = "";
-                for (i = 1; i <= len; i++)
-                {
-                    chars[i - 1] = Convert.ToChar(morse.Left(morse.Right(str, 1 + len - i), 1));
-                    fstr += (chars[i - 1] + c);
-                }
-                Codeunder.Text = fstr;
-                */
-
-
                 morse.HorizonalAlignCenter(MCode, MCode.Location.Y);
                 Dontunderstand.Text = "次の問題(N)";
                 q_judge = true;
@@ -341,7 +326,7 @@ namespace Morse_App_Edu
         {
             SaveDialog_DefaultSetting();
             int i, j;
-            string Fpath, Content, Convert_content;
+            string Fpath, Convert_content;
             char[] C;
             DialogResult result;
             result = saveFileDialog1.ShowDialog();//このタイミングでプロセスメモリが一様に増加している。
@@ -351,7 +336,7 @@ namespace Morse_App_Edu
             }
             Fpath = saveFileDialog1.FileName;//選択したパスが返
             j = Codeinput.Text.Length;
-            Content = Codeinput.Text;
+            //Content = Codeinput.Text;
             //確認用
             C = new char[j];
             using (stream = new StreamWriter(Fpath, false, Encoding.UTF8))//ファイルの上書き作成
@@ -359,7 +344,7 @@ namespace Morse_App_Edu
             }
             for (i = 1; i <= j; i++)
             {
-                C[i - 1] = Convert.ToChar(morse.Left(morse.Right(Content, 1 + j - i), 1));//複雑さ増しているような
+                C[i - 1] = Convert.ToChar(morse.Left(morse.Right(Codeinput.Text, 1 + j - i), 1));//複雑さ増しているような
                 //確認用
                 //MessageBox.Show(C[i - 1].ToString());
                 using (stream = new StreamWriter(Fpath, true, Encoding.UTF8))//ファイルに追記
@@ -387,7 +372,7 @@ namespace Morse_App_Edu
         {
             SaveDialog_ImageSetting();
             int i, j, k;
-            string Content, Convert_content;
+            string Convert_content;
             int locate_origin = 0;
             int len;
             char[] C;
@@ -397,18 +382,16 @@ namespace Morse_App_Edu
             {
                 return;
             }
-            j = Codeinput.Text.Length;
-            Content = Codeinput.Text;
+            j = Codeinput.TextLength;
             //確認用
             C = new char[j];
             char[] C_2;
             for (i = 1; i <= j; i++)//PIctureboxのWidth値の計上
             {
-                C[i - 1] = Convert.ToChar(morse.Left(morse.Right(Content, 1 + j - i), 1));//複雑さ増しているような
+                C[i - 1] = Convert.ToChar(morse.Left(morse.Right(Codeinput.Text, 1 + j - i), 1));//複雑さ増しているような
                 Convert_content = morse.MorseCode(C[i - 1]);
-                len = Convert_content.Length;
-                C_2 = new char[len];
-                for (k = 1; k <= len; k++)
+                C_2 = new char[Convert_content.Length];
+                for (k = 1; k <= Convert_content.Length; k++)
                 {
 
                     C_2[k - 1] = Convert.ToChar(Convert_content.Substring(k - 1, 1));
@@ -420,7 +403,7 @@ namespace Morse_App_Edu
                     {
                         locate_origin += 3;
                     }
-                    if (k != len) locate_origin += 1;
+                    if (k != Convert_content.Length) locate_origin += 1;
                 }
                 locate_origin += 3;
             }
@@ -429,13 +412,14 @@ namespace Morse_App_Edu
             Code_image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             Code_image2 = Graphics.FromImage(Code_image);
 
+            Code_image2.FillRectangle(Back, -1, -1, pictureBox1.Width + 1, pictureBox1.Height + 1);
             for (i = 1; i <= j; i++)//描画処理
             {
-                C[i - 1] = Convert.ToChar(morse.Left(morse.Right(Content, 1 + j - i), 1));//複雑さ増しているような
+                C[i - 1] = Convert.ToChar(morse.Left(morse.Right(Codeinput.Text, 1 + j - i), 1));//複雑さ増しているような
                 Convert_content = morse.MorseCode(C[i - 1]);
                 len = Convert_content.Length;
                 C_2 = new char[len];
-                for (k = 1; k <= len; k++)
+                for (k = 1; k <= Convert_content.Length; k++)
                 {
 
                     C_2[k - 1] = Convert.ToChar(Convert_content.Substring(k - 1, 1));
@@ -449,7 +433,7 @@ namespace Morse_App_Edu
                         Code_image2.FillRectangle(Stripe, locate_origin, -1, 3, pictureBox1.Height + 1); ;
                         locate_origin += 3;
                     }
-                    if (k != len)locate_origin += 1;
+                    if (k != Convert_content.Length) locate_origin += 1;
                 }
                 locate_origin += 3;
             }
@@ -457,6 +441,12 @@ namespace Morse_App_Edu
             Code_image.Save(saveFileDialog1.FileName, ImageFormat.Png);
 
         }
+
+        private void TitlePanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
         private void Play_Click(object sender, EventArgs e)
         {
             morse.Play_Click(Codeinput.Text);
