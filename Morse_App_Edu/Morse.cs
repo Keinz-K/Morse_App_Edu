@@ -63,6 +63,7 @@ namespace Morse_App_Edu
             int a = (int)code;
             switch (a)//雑談であるが、此処の分岐先の返り値を書き換えれば本来のモールス表とは異なる独自の暗号表が作成出来る。(開発時に意図していた要素の一つ)
             {
+                case 32: return " ";//半角スペース
                 case 48: return "-----";//0
                 case 49: return ".----";//1
                 case 50: return "..---";//2
@@ -148,7 +149,6 @@ namespace Morse_App_Edu
         }
         public void Play_Click(string textBox,int time_unit,int frequency)//入力に応じた音声再生処理関数
         {
-            //半角スペースを代入されたときに700msの待機をさせたい。
             int len = textBox.Length;
             char[] aa = new char[len];
             string[] audio = new string[len];
@@ -158,15 +158,10 @@ namespace Morse_App_Edu
             {
                 aa[i - 1] = Convert.ToChar(textBox.Substring(i - 1, 1));
                 //MessageBox.Show(((int)(aa[i - 1])).ToString());
-                if (((int)(aa[i - 1]) >= 48 && (int)(aa[i - 1]) <= 59) || ((int)(aa[i - 1]) >= 65) && ((int)(aa[i - 1]) <= 122))//見づらい
+                if ((int)aa[i-1] == 32||((int)(aa[i - 1]) >= 48 && (int)(aa[i - 1]) <= 59) || ((int)(aa[i - 1]) >= 65) && ((int)(aa[i - 1]) <= 122))//見づらい
                 {
                     audio[i - 1] = MorseCode(aa[i - 1]);
-                }/*
-                else if (((int)(aa[i - 1])) == 32)
-                {
-                    //audio[i - 1] = " ";
-                    //半角スペースの時
-                }*/
+                }
                 else
                 {
                     MessageBox.Show("処理できない文字が含まれている為再生できません。", "Error のお知らせ", MessageBoxButtons.OK, MessageBoxIcon.Stop);
@@ -189,19 +184,13 @@ namespace Morse_App_Edu
                     {
                         Console.Beep(frequency, time_unit * 3);
                     }
-                    /*else if (aa_2[j - 1] == ' ')
+                    else if (aa_2[j - 1] == ' ')
                     {
-                        MessageBox.Show("word 1");
+                        Thread.Sleep(time_unit * 7);
                         continue;
-                    }*/
+                    }
                     Thread.Sleep(time_unit);
-                }/*
-                if (aa_2[i - 1] == ' ')
-                {
-                    MessageBox.Show("word 2");
-                    Thread.Sleep(time_unit * 7);
-                    continue;
-                }*/
+                }
                 Thread.Sleep(time_unit * 3);
             }
             //長文を打ち込んだ際に、安全の為アプリケーションを停止、或いはプロセスを中断する機能が必要である。
