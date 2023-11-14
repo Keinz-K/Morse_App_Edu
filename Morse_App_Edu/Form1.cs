@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Windows.Forms;
@@ -24,6 +25,7 @@ namespace Morse_App_Edu
         2023/9/3  :信号入力に伴う画像の生成機能の作成開始。併せて、使用フレームワークを.NET Freamwork 4.8 から 3.5に切り替えた。
         2023/9/4  :画像生成機能の作成完了。3.5ではNet.httpの参照に問題が発生した。が現状ここを参照していない為問題ない。
         2023/11/13:再生処理に関して、速度を調整できるようにした。位置調整の値の調整を別関数に格納した。
+        2023/11/15:再生処理について、半角スペースを入力時に待機するように処理を変更した。
      */
     public partial class Form1 : Form
     {
@@ -141,7 +143,7 @@ namespace Morse_App_Edu
             char[] a;
             string b = "abcde";
             a = b.ToCharArray();
-            MessageBox.Show(a.Length.ToString() + "\n" + a[0].ToString() + "\n" + a[1].ToString());
+            //MessageBox.Show(a.Length.ToString() + "\n" + a[0].ToString() + "\n" + a[1].ToString());
             //MessageBox.Show(Stopwatch.GetTimestamp().ToString());
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)//試用:押下していた時間を計測
@@ -322,7 +324,7 @@ namespace Morse_App_Edu
         private void Other_Click(object sender, EventArgs e)
         {
             MessageBox.Show("バージョン:" + Version + "\n作成者:keinz\n", "Version info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            Title_Click(sender, e);
+            //Title_Click(sender, e);
         }
         private void ReferenceMorseTable_Click(object sender, EventArgs e)
         {
@@ -336,6 +338,12 @@ namespace Morse_App_Edu
         }
         private void GenerateOrSave_Click(object sender, EventArgs e)
         {
+            if (Codeinput.Text.Length == 0)
+            {
+                MessageBox.Show("文字を入力してください", "Errorのお知らせ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             SaveDialog_DefaultSetting();
             char[] C;
             if (saveFileDialog1.ShowDialog() == DialogResult.Cancel)//OK以外を選択したとき(エラー処理)
@@ -370,6 +378,11 @@ namespace Morse_App_Edu
         }
         private void Generate_Image_Click(object sender, EventArgs e)//入力に応じた画像を生成する処理
         {
+            if (Codeinput.Text.Length == 0)
+            {
+                MessageBox.Show("文字を入力してください","Errorのお知らせ",MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             SaveDialog_ImageSetting();
             int i, j, k;
             string Convert_content;
