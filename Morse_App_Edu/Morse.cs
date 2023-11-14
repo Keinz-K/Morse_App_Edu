@@ -146,20 +146,17 @@ namespace Morse_App_Edu
             }
             return i;
         }
-        public void Play_Click(string textBox)//入力に応じた音声再生処理関数
+        public void Play_Click(string textBox,int time_unit,int frequency)//入力に応じた音声再生処理関数
         {
             //半角スペースを代入されたときに700msの待機をさせたい。
-            int frequency = 1000;
-            int time_unit = 100;
-            string str = textBox;
-            int len = str.Length;
+            int len = textBox.Length;
             char[] aa = new char[len];
             string[] audio = new string[len];
             int i, j;
             char[] aa_2;
             for (i = 1; i <= len; i++)//文字に対応するコードの代入
             {
-                aa[i - 1] = Convert.ToChar(str.Substring(i - 1, 1));
+                aa[i - 1] = Convert.ToChar(textBox.Substring(i - 1, 1));
                 //MessageBox.Show(((int)(aa[i - 1])).ToString());
                 if (((int)(aa[i - 1]) >= 48 && (int)(aa[i - 1]) <= 59) || ((int)(aa[i - 1]) >= 65) && ((int)(aa[i - 1]) <= 122))//見づらい
                 {

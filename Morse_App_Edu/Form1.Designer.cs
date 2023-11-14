@@ -49,6 +49,10 @@
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.GenePanel = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.trackBar2 = new System.Windows.Forms.TrackBar();
+            this.label1 = new System.Windows.Forms.Label();
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.Generate_Image = new System.Windows.Forms.Label();
             this.ResetCode = new System.Windows.Forms.Label();
             this.Play = new System.Windows.Forms.Label();
@@ -68,14 +72,18 @@
             this.Question = new System.Windows.Forms.Label();
             this.Dakenrensyuu = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.GenePanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.TitlePanel.SuspendLayout();
             this.Quizpanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // Title
@@ -139,7 +147,7 @@
             this.Quiz});
             this.Study.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.Study.Name = "Study";
-            this.Study.Size = new System.Drawing.Size(61, 24);
+            this.Study.Size = new System.Drawing.Size(61, 28);
             this.Study.Text = "覚える";
             // 
             // Practice
@@ -161,7 +169,7 @@
             this.Generate.AccessibleDescription = "";
             this.Generate.AccessibleName = "";
             this.Generate.Name = "Generate";
-            this.Generate.Size = new System.Drawing.Size(62, 24);
+            this.Generate.Size = new System.Drawing.Size(62, 28);
             this.Generate.Text = "生成する";
             this.Generate.ToolTipText = "アルファベットからモールス信号を生成、又は再生します。";
             this.Generate.Click += new System.EventHandler(this.Generate_Click);
@@ -169,7 +177,7 @@
             // Other
             // 
             this.Other.Name = "Other";
-            this.Other.Size = new System.Drawing.Size(47, 24);
+            this.Other.Size = new System.Drawing.Size(47, 28);
             this.Other.Text = "その他";
             this.Other.Click += new System.EventHandler(this.Other_Click);
             // 
@@ -228,20 +236,75 @@
             // 
             // GenePanel
             // 
+            this.GenePanel.Controls.Add(this.label2);
+            this.GenePanel.Controls.Add(this.trackBar2);
+            this.GenePanel.Controls.Add(this.label1);
+            this.GenePanel.Controls.Add(this.trackBar1);
             this.GenePanel.Controls.Add(this.Generate_Image);
             this.GenePanel.Controls.Add(this.ResetCode);
             this.GenePanel.Controls.Add(this.Play);
             this.GenePanel.Controls.Add(this.GenerateOrSave);
             this.GenePanel.Controls.Add(this.Codeinput);
-            this.GenePanel.Location = new System.Drawing.Point(486, 105);
+            this.GenePanel.Location = new System.Drawing.Point(433, 105);
             this.GenePanel.Name = "GenePanel";
             this.GenePanel.Size = new System.Drawing.Size(314, 230);
             this.GenePanel.TabIndex = 7;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label2.Location = new System.Drawing.Point(141, 51);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(63, 20);
+            this.label2.TabIndex = 15;
+            this.label2.Text = "label2";
+            // 
+            // trackBar2
+            // 
+            this.trackBar2.LargeChange = 10;
+            this.trackBar2.Location = new System.Drawing.Point(123, 185);
+            this.trackBar2.Margin = new System.Windows.Forms.Padding(0);
+            this.trackBar2.Maximum = 2000;
+            this.trackBar2.Minimum = 200;
+            this.trackBar2.Name = "trackBar2";
+            this.trackBar2.Size = new System.Drawing.Size(139, 56);
+            this.trackBar2.SmallChange = 100;
+            this.trackBar2.TabIndex = 14;
+            this.trackBar2.TickFrequency = 1000;
+            this.trackBar2.Value = 200;
+            this.trackBar2.Scroll += new System.EventHandler(this.trackBar2_Scroll);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label1.Location = new System.Drawing.Point(218, 89);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(63, 20);
+            this.label1.TabIndex = 13;
+            this.label1.Text = "label1";
+            // 
+            // trackBar1
+            // 
+            this.trackBar1.LargeChange = 10;
+            this.trackBar1.Location = new System.Drawing.Point(165, 161);
+            this.trackBar1.Margin = new System.Windows.Forms.Padding(0);
+            this.trackBar1.Maximum = 100;
+            this.trackBar1.Minimum = 10;
+            this.trackBar1.Name = "trackBar1";
+            this.trackBar1.Size = new System.Drawing.Size(139, 56);
+            this.trackBar1.SmallChange = 10;
+            this.trackBar1.TabIndex = 12;
+            this.trackBar1.TabStop = false;
+            this.trackBar1.TickFrequency = 10;
+            this.trackBar1.Value = 10;
+            this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
+            // 
             // Generate_Image
             // 
             this.Generate_Image.AutoSize = true;
-            this.Generate_Image.Location = new System.Drawing.Point(44, 191);
+            this.Generate_Image.Location = new System.Drawing.Point(19, 161);
             this.Generate_Image.Name = "Generate_Image";
             this.Generate_Image.Size = new System.Drawing.Size(118, 15);
             this.Generate_Image.TabIndex = 11;
@@ -433,18 +496,27 @@
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Visible = false;
             // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Location = new System.Drawing.Point(184, 373);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(100, 50);
+            this.pictureBox2.TabIndex = 11;
+            this.pictureBox2.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.GenePanel);
+            this.Controls.Add(this.pictureBox2);
+            this.Controls.Add(this.Quizpanel);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.Dakenrensyuu);
             this.Controls.Add(this.TitlePanel);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
-            this.Controls.Add(this.GenePanel);
-            this.Controls.Add(this.Quizpanel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.ImeMode = System.Windows.Forms.ImeMode.Alpha;
             this.MaximizeBox = false;
@@ -460,12 +532,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.GenePanel.ResumeLayout(false);
             this.GenePanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.TitlePanel.ResumeLayout(false);
             this.TitlePanel.PerformLayout();
             this.Quizpanel.ResumeLayout(false);
             this.Quizpanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -511,6 +586,11 @@
         private System.Windows.Forms.PictureBox MCode;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label Generate_Image;
+        private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TrackBar trackBar2;
+        private System.Windows.Forms.PictureBox pictureBox2;
     }
 }
 

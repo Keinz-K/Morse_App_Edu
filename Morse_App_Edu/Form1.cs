@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Net;
 using System.Text;
 using System.Windows.Forms;
 //テーマ:単一の意匠により与えられた文字データを工夫したプログラム運用
@@ -22,10 +23,12 @@ namespace Morse_App_Edu
                   :符号表示処理の改装を完了。以前の表示処理はコメント化して残している。。
         2023/9/3  :信号入力に伴う画像の生成機能の作成開始。併せて、使用フレームワークを.NET Freamwork 4.8 から 3.5に切り替えた。
         2023/9/4  :画像生成機能の作成完了。3.5ではNet.httpの参照に問題が発生した。が現状ここを参照していない為問題ない。
+        2023/11/13:再生処理に関して、速度を調整できるようにした。位置調整の値の調整を別関数に格納した。
      */
     public partial class Form1 : Form
     {
-        string Version = "1.0.1a";
+        string Version = "1.0.2a";
+        string Form_text = "モールス符号早覚えゲーム";
         Morse morse = new Morse();
         //MorseEventhandler morseEventhandler = new MorseEventhandler();
         bool q_judge;
@@ -49,9 +52,9 @@ namespace Morse_App_Edu
         }
         private void モールス信号WikipediaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //var client = new WebClient();
-            //client.DownloadData("https://www.gunma-ct.ac.jp/cms/wp-content/themes/kosen/images/common/header_logo.svg");
-            //client.DownloadFile("https://www.gunma-ct.ac.jp/cms/wp-content/themes/kosen/images/common/header_logo.svg", "C:\\Users\\kokkoro\\Desktop\\a.svg");
+            var client = new WebClient();
+            client.DownloadData("https://www.gunma-ct.ac.jp/cms/wp-content/themes/kosen/images/common/header_logo.svg");
+            client.DownloadFile("https://www.gunma-ct.ac.jp/cms/wp-content/themes/kosen/images/common/header_logo.svg", "C:\\Users\\kokkoro\\Desktop\\a.svg");
             //int p = DateTime.Now .Hour ;
             //MessageBox.Show(p.ToString());
         }
@@ -68,20 +71,39 @@ namespace Morse_App_Edu
             LocalTimeLabel1.Text = "只今の時間:" + h.ToString() + ":" + m.ToString() + ":" + s.ToString();
             //ApplicationMemory.Text = "現在の使用メモリサイズ :";//+ Process.GetCurrentProcess().ToString();
         }
-        private void Form1_Control_InitStatus()
+        private void Location_adjustment_load()//Form_Load関数実行時に一緒に実行。初期の位置調整関連の処理を格納
         {
-            //Loction
-
+            Size defaultpanelsize = new Size(440, 270);
+            TitlePanel.Size = defaultpanelsize;
+            GenePanel.Size = defaultpanelsize;
+            Quizpanel.Size = defaultpanelsize;
+            morse.HorizonalAlignCenter(Question, 30);
+            morse.HorizonalAlignCenter(Codeunder, 80);
+            morse.HorizonalAlignCenter(Title, 30);
+            morse.HorizonalAlignCenter(Codeinput, 30);
+            GenerateOrSave.Location = new Point(40, 100);
+            ResetCode.Location = new Point(40, 120);
+            Play.Location = new Point(40, 140);
+            Generate_Image.Location = new Point(40, 160);
+            morse.HorizonalAlignUserValue(Understand, 0.33f, 150);
+            morse.HorizonalAlignUserValue(Dontunderstand, 0.66f, 150);
+            morse.HorizonalAlignCenter(MCode, 120);
+            GenePanel.Location = Upperpanelpoint;
+            Quizpanel.Location = Upperpanelpoint;
+            label1.Location = new Point(240, 100);
+            label2.Location = new Point(240, 180);
+            trackBar1.Location = new Point(200, 120);
+            trackBar2.Location = new Point(200, 210);
+            trackBar1.Size = new Size(190, trackBar1.Height);
+            trackBar2.Size = new Size(190, trackBar1.Height);
 
         }
-        private void Form1_Load(object sender, EventArgs e)
+        private void Form1_Load(object sender, EventArgs e)//順番変えると狂う場所があるため注意
         {
-            Form1_Control_InitStatus();
-            Text = "モールス符号早覚えゲーム";
+            Text = Form_text;
             Title.Text = Text;
             Codeinput.Width = 350;
             MCode.BackColor = MCode.Parent.BackColor;
-            Size defaultpanelsize = new Size(440, 270);
             //stopwatch.Start();
             localtime.Stop();
             localtime.Start();
@@ -91,42 +113,35 @@ namespace Morse_App_Edu
             Debugger.Hide();
             ImeMode = ImeMode.Alpha;
             Size = Defaultformsize;
-            TitlePanel.Size = defaultpanelsize;
-            GenePanel.Size = defaultpanelsize;
-            Quizpanel.Size = defaultpanelsize;
+            Location_adjustment_load();
             MinimumSize = Defaultformsize;
             MaximumSize = Defaultformsize;
-            morse.HorizonalAlignCenter(Question, 30);
-            morse.HorizonalAlignCenter(Codeunder, 80);
-            morse.HorizonalAlignCenter(Title, 30);
-            morse.HorizonalAlignCenter(Codeinput, 30);
-            GenerateOrSave.Location = new Point(40, 100);
-            ResetCode.Location = new Point(40, 120);
-            Play.Location = new Point(40, 140);
-            Generate_Image.Location = new Point(40, 160);
             NextQuestion();
-            morse.HorizonalAlignUserValue(Understand, 0.33f, 150);
-            morse.HorizonalAlignUserValue(Dontunderstand, 0.66f, 150);
             MCode.Height = 10;
-            morse.HorizonalAlignCenter(MCode, 120);
             MCode.Visible = false;
-            GenePanel.Location = Upperpanelpoint;
-            Quizpanel.Location = Upperpanelpoint;
             pictureBox1.Size = new Size(100, 100);
             saveFileDialog1.InitialDirectory = morse.DesktopFilepath;
+            label1.Text = trackBar1.Maximum.ToString();
+            trackBar1.Minimum = 40;
+            trackBar1.Value = trackBar1.Maximum;
+            trackBar2.Maximum = 20000;
+            trackBar2.Value = 600;
+            trackBar1_Scroll(sender, e);
+            trackBar2_Scroll(sender, e);
+            pictureBox2.Hide();
+
         }
         private void MorseTable_Click(object sender, EventArgs e)
         {
             Title.Hide();
         }
-        private void Title_Click(object sender, EventArgs e)//開発進捗()
+        private void Title_Click(object sender, EventArgs e)//
         {
+            //MessageBox.Show(GC.GetTotalMemory(true).ToString());
             char[] a;
             string b = "abcde";
             a = b.ToCharArray();
-
             MessageBox.Show(a.Length.ToString() + "\n" + a[0].ToString() + "\n" + a[1].ToString());
-            //MessageBox.Show("現在開発中です。", "お知らせ", MessageBoxButtons.OK, MessageBoxIcon.Information);
             //MessageBox.Show(Stopwatch.GetTimestamp().ToString());
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)//試用:押下していた時間を計測
@@ -179,6 +194,7 @@ namespace Morse_App_Edu
         }
         private void ResetCode_Click(object sender, EventArgs e)
         {
+            //GC.Collect();
             Codeinput.Text = "";
         }
         private void Quiz_Click(object sender, EventArgs e)
@@ -226,13 +242,11 @@ namespace Morse_App_Edu
                 MCode.Visible = true;
                 char code = Convert.ToChar(Question.Text);
                 string str = morse.MorseCode(code);
-
                 //符号に対応する文字列に応じてpictureboxのimageを再描画させる処理
                 char[] chars1 = str.ToCharArray();
-                int a;
                 int widthpoint = 0;//文字に応じたpictureboxのwidthを計上する変数
                 int letteroffset = 20;
-                for (a = 1; a <= str.Length; a++)
+                for (int a = 1; a <= str.Length; a++)
                 {
                     if (chars1[a - 1] == '.')
                     {
@@ -257,7 +271,7 @@ namespace Morse_App_Edu
                 diagram = new Bitmap(MCode.Width, MCode.Height);
                 morsecode = Graphics.FromImage(diagram);
                 int origin = 0;
-                for (a = 1; a <= str.Length; a++)
+                for (int a = 1; a <= str.Length; a++)
                 {
                     if (chars1[a - 1] == '.')
                     {
@@ -308,11 +322,13 @@ namespace Morse_App_Edu
         private void Other_Click(object sender, EventArgs e)
         {
             MessageBox.Show("バージョン:" + Version + "\n作成者:keinz\n", "Version info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Title_Click(sender, e);
         }
         private void ReferenceMorseTable_Click(object sender, EventArgs e)
         {
             TitlePanel.Hide();
             GenePanel.Hide();
+            pictureBox2.Show();
         }
         private void Practice_Click(object sender, EventArgs e)
         {
@@ -321,24 +337,24 @@ namespace Morse_App_Edu
         private void GenerateOrSave_Click(object sender, EventArgs e)
         {
             SaveDialog_DefaultSetting();
-            int i;
             char[] C;
-            DialogResult result = saveFileDialog1.ShowDialog();//このタイミングでプロセスメモリが一様に増加している。
-            if (result == DialogResult.Cancel)//OK以外を選択したとき(エラー処理)
-            {
+            if (saveFileDialog1.ShowDialog() == DialogResult.Cancel)//OK以外を選択したとき(エラー処理)
+            {//このタイミングでプロセスメモリが一様に増加している。
+                //Dispose();
                 return;
             }
             C = Codeinput.Text.ToCharArray();
             using (stream = new StreamWriter(saveFileDialog1.FileName, false, Encoding.UTF8))//ファイルの上書き作成
             {
             }
-            for (i = 1; i <= Codeinput.TextLength; i++)
+            for (int i = 1; i <= Codeinput.TextLength; i++)
             {
                 using (stream = new StreamWriter(saveFileDialog1.FileName, true, Encoding.UTF8))//ファイルに追記
                 {
                     stream.Write(morse.MorseCode(C[i - 1]) + " ");
                 }
             }
+            //stream.Dispose();
         }
         private void SaveDialog_DefaultSetting()
         {
@@ -349,7 +365,6 @@ namespace Morse_App_Edu
         private void SaveDialog_ImageSetting()
         {
             saveFileDialog1.FileName = "output";
-
             saveFileDialog1.DefaultExt = "png";
             saveFileDialog1.Filter = "PNG|*.png*";
         }
@@ -361,8 +376,7 @@ namespace Morse_App_Edu
             int locate_origin = 0;
             int len;
             char[] C;
-            DialogResult result = saveFileDialog1.ShowDialog();//このタイミングでプロセスメモリが一様に増加している。
-            if (result == DialogResult.Cancel)//OK以外を選択したとき(エラー処理)
+            if (saveFileDialog1.ShowDialog() == DialogResult.Cancel)//OK以外を選択したとき(エラー処理)
             {
                 return;
             }
@@ -419,7 +433,19 @@ namespace Morse_App_Edu
         }
         private void Play_Click(object sender, EventArgs e)
         {
-            morse.Play_Click(Codeinput.Text);
+            Text = Form_text + " - 信号再生中 - ";
+            morse.Play_Click(Codeinput.Text, trackBar1.Value, trackBar2.Value);
+            Text = Form_text;
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            label1.Text = "再生速度 : " + trackBar1.Value.ToString();
+        }
+
+        private void trackBar2_Scroll(object sender, EventArgs e)
+        {
+            label2.Text = "周波数 : " + trackBar2.Value.ToString();
         }
     }
 }
