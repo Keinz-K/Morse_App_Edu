@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
+//using System.Linq;
 using System.Net;
 using System.Text;
 using System.Windows.Forms;
@@ -26,6 +26,7 @@ namespace Morse_App_Edu
         2023/9/4  :画像生成機能の作成完了。3.5ではNet.httpの参照に問題が発生した。が現状ここを参照していない為問題ない。
         2023/11/13:再生処理に関して、速度を調整できるようにした。位置調整の値の調整を別関数に格納した。
         2023/11/15:再生処理について、半角スペースを入力時に待機するように処理を変更した。
+        2023/12/8 :再生処理中に停止ボタンが押せるよう、マルチスレッド化させることにした。
      */
     public partial class Form1 : Form
     {
@@ -52,6 +53,7 @@ namespace Morse_App_Edu
         {
             InitializeComponent();
         }
+
         private void モールス信号WikipediaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var client = new WebClient();
@@ -131,7 +133,7 @@ namespace Morse_App_Edu
             trackBar1_Scroll(sender, e);
             trackBar2_Scroll(sender, e);
             pictureBox2.Hide();
-
+            backgroundWorker1.RunWorkerAsync();
         }
         private void MorseTable_Click(object sender, EventArgs e)
         {
@@ -140,11 +142,14 @@ namespace Morse_App_Edu
         private void Title_Click(object sender, EventArgs e)//
         {
             //MessageBox.Show(GC.GetTotalMemory(true).ToString());
-            char[] a;
-            string b = "abcde";
-            a = b.ToCharArray();
+            //char[] a;
+            //string b = "abcde";
+            //a = b.ToCharArray();
             //MessageBox.Show(a.Length.ToString() + "\n" + a[0].ToString() + "\n" + a[1].ToString());
             //MessageBox.Show(Stopwatch.GetTimestamp().ToString());
+
+
+
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)//試用:押下していた時間を計測
         {
@@ -153,15 +158,6 @@ namespace Morse_App_Edu
         }
         private void Form1_KeyUp(object sender, KeyEventArgs e)//偶に呼び出されないことがある。
         {
-            //この辺のコードは後に使用するため消さない事
-
-            //MessageBox.Show(e.KeyValue.ToString());
-            //stopwatch.Stop();
-            //SystemSounds.Beep.Play();
-            //TimeSpan timeSpan = stopwatch.Elapsed;
-
-            //Text = timeSpan.Milliseconds.ToString();
-            //Pu.BackColor = Color.Red;
             if (e.KeyValue == 27)
             {
                 TitlePanel.Show();
@@ -198,6 +194,9 @@ namespace Morse_App_Edu
         {
             //GC.Collect();
             Codeinput.Text = "";
+            backgroundWorker1.CancelAsync();
+
+            // backgroundWorker1.Dispose();
         }
         private void Quiz_Click(object sender, EventArgs e)
         {
@@ -380,7 +379,7 @@ namespace Morse_App_Edu
         {
             if (Codeinput.Text.Length == 0)
             {
-                MessageBox.Show("文字を入力してください","Errorのお知らせ",MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("文字を入力してください", "Errorのお知らせ", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             SaveDialog_ImageSetting();
@@ -447,18 +446,33 @@ namespace Morse_App_Edu
         private void Play_Click(object sender, EventArgs e)
         {
             Text = Form_text + " - 信号再生中 - ";
-            morse.Play_Click(Codeinput.Text, trackBar1.Value, trackBar2.Value);
-            Text = Form_text;
-        }
+            backgroundWorker1.RunWorkerAsync();
 
+        }
+        int a, b;
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
             label1.Text = "再生速度 : " + trackBar1.Value.ToString();
+            a = trackBar1.Value;
         }
 
         private void trackBar2_Scroll(object sender, EventArgs e)
         {
             label2.Text = "周波数 : " + trackBar2.Value.ToString();
+            b = trackBar2.Value;
+        }
+
+        private void backgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            //morse.Play_Click(Codeinput.Text, trackBar1.Value, trackBar2.Value);
+            morse.Play_Click(Codeinput.Text, a, b);
+
+        }
+
+        private void backgroundWorker1_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        {
+            Text = Form_text;
+
         }
     }
 }

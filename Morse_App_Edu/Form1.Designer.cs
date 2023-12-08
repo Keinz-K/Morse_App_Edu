@@ -73,6 +73,7 @@
             this.Dakenrensyuu = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
@@ -147,7 +148,7 @@
             this.Quiz});
             this.Study.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.Study.Name = "Study";
-            this.Study.Size = new System.Drawing.Size(61, 28);
+            this.Study.Size = new System.Drawing.Size(61, 24);
             this.Study.Text = "覚える";
             // 
             // Practice
@@ -169,7 +170,7 @@
             this.Generate.AccessibleDescription = "";
             this.Generate.AccessibleName = "";
             this.Generate.Name = "Generate";
-            this.Generate.Size = new System.Drawing.Size(62, 28);
+            this.Generate.Size = new System.Drawing.Size(62, 24);
             this.Generate.Text = "生成する";
             this.Generate.ToolTipText = "アルファベットからモールス信号を生成、又は再生します。";
             this.Generate.Click += new System.EventHandler(this.Generate_Click);
@@ -177,7 +178,7 @@
             // Other
             // 
             this.Other.Name = "Other";
-            this.Other.Size = new System.Drawing.Size(47, 28);
+            this.Other.Size = new System.Drawing.Size(47, 24);
             this.Other.Text = "その他";
             this.Other.Click += new System.EventHandler(this.Other_Click);
             // 
@@ -504,6 +505,12 @@
             this.pictureBox2.TabIndex = 11;
             this.pictureBox2.TabStop = false;
             // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.WorkerSupportsCancellation = true;
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -591,6 +598,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TrackBar trackBar2;
         private System.Windows.Forms.PictureBox pictureBox2;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }
 

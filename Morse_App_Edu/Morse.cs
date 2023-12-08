@@ -24,6 +24,7 @@ namespace Morse_App_Edu
             }
             return result;
         }
+
         public string Right(string target_str, int offset_length)//エクセルのRight関数の再現
         {
             int len = target_str.Length;
@@ -34,7 +35,7 @@ namespace Morse_App_Edu
             {
                 a[i - 1] = Convert.ToChar(target_str.Substring(i - 1, 1));
             }
-            for (i = len - offset_length; i <= len-1; i++)
+            for (i = len - offset_length; i <= len - 1; i++)
             {
                 result += a[i];
             }
@@ -50,7 +51,7 @@ namespace Morse_App_Edu
         {
             control.Location = new Point(control.Parent.Width / 2 - control.Width / 2, y);
         }
-        public void HorizonalAlignUserValue(Control control,float ratio, int y)//コントロールのx軸を親コントロール内の任意値の位置に合わせる関数。第二引数は0~1の値を入れる事。そうしないと仕様上確実にはみ出します。。y軸方向は任意値
+        public void HorizonalAlignUserValue(Control control, float ratio, int y)//コントロールのx軸を親コントロール内の任意値の位置に合わせる関数。第二引数は0~1の値を入れる事。そうしないと仕様上確実にはみ出します。。y軸方向は任意値
         {
             control.Location = new Point((int)(control.Parent.Width * ratio - control.Width / 2), y);
         }
@@ -140,14 +141,12 @@ namespace Morse_App_Edu
             for (j = min; j <= max; j++)
             {
                 i++;
-                if (1 / (double)a * i >= b)
-                {
-                    break;
-                }
+                if (1 / (double)a * i >= b) break;
+
             }
             return i;
         }
-        public void Play_Click(string textBox,int time_unit,int frequency)//入力に応じた音声再生処理関数
+        public void Play_Click(string textBox, int time_unit, int frequency)//入力に応じた音声再生処理関数
         {
             int len = textBox.Length;
             char[] aa = new char[len];
@@ -158,7 +157,7 @@ namespace Morse_App_Edu
             {
                 aa[i - 1] = Convert.ToChar(textBox.Substring(i - 1, 1));
                 //MessageBox.Show(((int)(aa[i - 1])).ToString());
-                if ((int)aa[i-1] == 32||((int)(aa[i - 1]) >= 48 && (int)(aa[i - 1]) <= 59) || ((int)(aa[i - 1]) >= 65) && ((int)(aa[i - 1]) <= 122))//見づらい
+                if ((int)aa[i - 1] == 32 || ((int)(aa[i - 1]) >= 48 && (int)(aa[i - 1]) <= 59) || ((int)(aa[i - 1]) >= 65) && ((int)(aa[i - 1]) <= 122))//見づらい
                 {
                     audio[i - 1] = MorseCode(aa[i - 1]);
                 }
@@ -176,14 +175,8 @@ namespace Morse_App_Edu
                 for (j = 1; j <= len_2; j++)
                 {
                     aa_2[j - 1] = Convert.ToChar(audio[i - 1].Substring(j - 1, 1));
-                    if (aa_2[j - 1] == '.')
-                    {
-                        Console.Beep(frequency, time_unit);
-                    }
-                    else if (aa_2[j - 1] == '-')
-                    {
-                        Console.Beep(frequency, time_unit * 3);
-                    }
+                    if (aa_2[j - 1] == '.') Console.Beep(frequency, time_unit);
+                    else if (aa_2[j - 1] == '-') Console.Beep(frequency, time_unit * 3);
                     else if (aa_2[j - 1] == ' ')
                     {
                         Thread.Sleep(time_unit * 7);
