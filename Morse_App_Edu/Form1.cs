@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 //using System.Linq;
-using System.Net;
 using System.Text;
 using System.Windows.Forms;
 //テーマ:単一の意匠により与えられた文字データを工夫したプログラム運用
@@ -27,6 +26,7 @@ namespace Morse_App_Edu
         2023/11/13:再生処理に関して、速度を調整できるようにした。位置調整の値の調整を別関数に格納した。
         2023/11/15:再生処理について、半角スペースを入力時に待機するように処理を変更した。
         2023/12/8 :再生処理中に停止ボタンが押せるよう、マルチスレッド化させることにした。
+        2024/2/3  :Morse.cs内の条件書式を修正。
      */
     public partial class Form1 : Form
     {
@@ -53,12 +53,9 @@ namespace Morse_App_Edu
         {
             InitializeComponent();
         }
-
         private void モールス信号WikipediaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var client = new WebClient();
-            client.DownloadData("https://www.gunma-ct.ac.jp/cms/wp-content/themes/kosen/images/common/header_logo.svg");
-            client.DownloadFile("https://www.gunma-ct.ac.jp/cms/wp-content/themes/kosen/images/common/header_logo.svg", "C:\\Users\\kokkoro\\Desktop\\a.svg");
+            //var client = new WebClient();
             //int p = DateTime.Now .Hour ;
             //MessageBox.Show(p.ToString());
         }
@@ -70,8 +67,6 @@ namespace Morse_App_Edu
             s = DateTime.Now.Second;
             //PerformanceCounter counter = new PerformanceCounter();
             //counter.
-
-
             LocalTimeLabel1.Text = "只今の時間:" + h.ToString() + ":" + m.ToString() + ":" + s.ToString();
             //ApplicationMemory.Text = "現在の使用メモリサイズ :";//+ Process.GetCurrentProcess().ToString();
         }
@@ -147,9 +142,6 @@ namespace Morse_App_Edu
             //a = b.ToCharArray();
             //MessageBox.Show(a.Length.ToString() + "\n" + a[0].ToString() + "\n" + a[1].ToString());
             //MessageBox.Show(Stopwatch.GetTimestamp().ToString());
-
-
-
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)//試用:押下していた時間を計測
         {
@@ -212,10 +204,7 @@ namespace Morse_App_Edu
             char[] content;
             int i;
             content = Codeinput.Text.ToCharArray();
-            for (i = 0; i <= content.Length - 1; i++)
-            {
-                a[i] = content[i];
-            }
+            for (i = 0; i <= content.Length - 1; i++) a[i] = content[i];
             for (i = 0; i <= Codeinput.TextLength - 1; i++)
             {
                 if (a[i] == 13)
@@ -249,22 +238,10 @@ namespace Morse_App_Edu
                 int letteroffset = 20;
                 for (int a = 1; a <= str.Length; a++)
                 {
-                    if (chars1[a - 1] == '.')
-                    {
-                        widthpoint += 10;
-                    }
-                    else if (chars1[a - 1] == '-')
-                    {
-                        widthpoint += 30;
-                    }
-                    if (a == str.Length)
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        widthpoint += letteroffset;
-                    }
+                    if (chars1[a - 1] == '.') widthpoint += 10;
+                    else if (chars1[a - 1] == '-') widthpoint += 30;
+                    if (a == str.Length) continue;
+                    else widthpoint += letteroffset;
                 }
                 MCode.Width = widthpoint;
                 Debugger.Text = widthpoint.ToString();
@@ -307,14 +284,8 @@ namespace Morse_App_Edu
         private void Understand_Click(object sender, EventArgs e)
         {
             MCode.Visible = false;
-            if (q_judge == true)
-            {
-                NextQuestion();
-            }
-            else
-            {
-                morse.Quizpanel_Click(Question);
-            }
+            if (q_judge == true) NextQuestion();
+            else morse.Quizpanel_Click(Question);
         }
         private void Dakenrensyuu_Click(object sender, EventArgs e)
         {
@@ -356,10 +327,8 @@ namespace Morse_App_Edu
             }
             for (int i = 1; i <= Codeinput.TextLength; i++)
             {
-                using (stream = new StreamWriter(saveFileDialog1.FileName, true, Encoding.UTF8))//ファイルに追記
-                {
-                    stream.Write(morse.MorseCode(C[i - 1]) + " ");
-                }
+                //ファイルに追記
+                using (stream = new StreamWriter(saveFileDialog1.FileName, true, Encoding.UTF8)) stream.Write(morse.MorseCode(C[i - 1]) + " ");
             }
             //stream.Dispose();
         }
@@ -402,14 +371,8 @@ namespace Morse_App_Edu
                 C_2 = Convert_content.ToCharArray();
                 for (k = 0; k <= Convert_content.Length - 1; k++)
                 {
-                    if (C_2[k] == '.')
-                    {
-                        locate_origin += 1;
-                    }
-                    else if (C_2[k] == '-')
-                    {
-                        locate_origin += 3;
-                    }
+                    if (C_2[k] == '.') locate_origin += 1;
+                    else if (C_2[k] == '-') locate_origin += 3;
                     if (k != Convert_content.Length) locate_origin += 1;
                 }
                 locate_origin += 3;
@@ -447,7 +410,6 @@ namespace Morse_App_Edu
         {
             Text = Form_text + " - 信号再生中 - ";
             backgroundWorker1.RunWorkerAsync();
-
         }
         int a, b;
         private void trackBar1_Scroll(object sender, EventArgs e)
@@ -455,24 +417,19 @@ namespace Morse_App_Edu
             label1.Text = "再生速度 : " + trackBar1.Value.ToString();
             a = trackBar1.Value;
         }
-
         private void trackBar2_Scroll(object sender, EventArgs e)
         {
             label2.Text = "周波数 : " + trackBar2.Value.ToString();
             b = trackBar2.Value;
         }
-
         private void backgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             //morse.Play_Click(Codeinput.Text, trackBar1.Value, trackBar2.Value);
             morse.Play_Click(Codeinput.Text, a, b);
-
         }
-
         private void backgroundWorker1_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
             Text = Form_text;
-
         }
     }
 }

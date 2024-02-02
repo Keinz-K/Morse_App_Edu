@@ -14,14 +14,8 @@ namespace Morse_App_Edu
             int i;
             char[] a = new char[len];
             string result = "";
-            for (i = 1; i <= len; i++)
-            {
-                a[i - 1] = Convert.ToChar(target_str.Substring(i - 1, 1));
-            }
-            for (i = 1; i <= offset_length; i++)
-            {
-                result += a[i - 1];
-            }
+            for (i = 1; i <= len; i++) a[i - 1] = Convert.ToChar(target_str.Substring(i - 1, 1));
+            for (i = 1; i <= offset_length; i++) result += a[i - 1];
             return result;
         }
 
@@ -51,7 +45,8 @@ namespace Morse_App_Edu
         {
             control.Location = new Point(control.Parent.Width / 2 - control.Width / 2, y);
         }
-        public void HorizonalAlignUserValue(Control control, float ratio, int y)//コントロールのx軸を親コントロール内の任意値の位置に合わせる関数。第二引数は0~1の値を入れる事。そうしないと仕様上確実にはみ出します。。y軸方向は任意値
+        //コントロールのx軸を親コントロール内の任意値の位置に合わせる関数。第二引数は0~1の値を入れる事。そうしないと仕様上確実にはみ出します。。y軸方向は任意値
+        public void HorizonalAlignUserValue(Control control, float ratio, int y)
         {
             control.Location = new Point((int)(control.Parent.Width * ratio - control.Width / 2), y);
         }
@@ -59,10 +54,9 @@ namespace Morse_App_Edu
         {
             MessageBox.Show("未だ未開発です。今後のアップデートにご期待ください。", "お知らせ", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-        public string MorseCode(char code)//個々の分岐については、ASCiicodetable を参照すること。
+        public string MorseCode(int code)//個々の分岐については、ASCiicodetable を参照すること。
         {
-            int a = (int)code;
-            switch (a)//雑談であるが、此処の分岐先の返り値を書き換えれば本来のモールス表とは異なる独自の暗号表が作成出来る。(開発時に意図していた要素の一つ)
+            switch (code)//雑談であるが、此処の分岐先の返り値を書き換えれば本来のモールス表とは異なる独自の暗号表が作成出来る。(開発時に意図していた要素の一つ)
             {
                 case 32: return " ";//半角スペース
                 case 48: return "-----";//0
@@ -142,25 +136,25 @@ namespace Morse_App_Edu
             {
                 i++;
                 if (1 / (double)a * i >= b) break;
-
             }
             return i;
         }
         public void Play_Click(string textBox, int time_unit, int frequency)//入力に応じた音声再生処理関数
         {
             int len = textBox.Length;
-            char[] aa = new char[len];
+            int[] aa = new int[len];
             string[] audio = new string[len];
             int i, j;
             char[] aa_2;
+            bool space, number, alphabet;
             for (i = 1; i <= len; i++)//文字に対応するコードの代入
             {
                 aa[i - 1] = Convert.ToChar(textBox.Substring(i - 1, 1));
+                space = aa[i - 1] == 32;
+                number = aa[i - 1] >= 48 && aa[i - 1] <= 59;
+                alphabet = aa[i - 1] >= 65 && aa[i - 1] <= 122;
                 //MessageBox.Show(((int)(aa[i - 1])).ToString());
-                if ((int)aa[i - 1] == 32 || ((int)(aa[i - 1]) >= 48 && (int)(aa[i - 1]) <= 59) || ((int)(aa[i - 1]) >= 65) && ((int)(aa[i - 1]) <= 122))//見づらい
-                {
-                    audio[i - 1] = MorseCode(aa[i - 1]);
-                }
+                if (space || number || alphabet) audio[i - 1] = MorseCode(aa[i - 1]);
                 else
                 {
                     MessageBox.Show("処理できない文字が含まれている為再生できません。", "Error のお知らせ", MessageBoxButtons.OK, MessageBoxIcon.Stop);
@@ -201,8 +195,6 @@ namespace Morse_App_Edu
             graphics.DrawLine(blackpen, 10, 10, 30, 30);
             graphics.DrawPie(blackpen, 10, 10, 30, 30, 0, 360);
             graphics.FillPie(solidBrush, 50, 50, 10, 10, 90, 180);//時計回り
-
-
             pictureBox.Image = bitmap;
         }
 
