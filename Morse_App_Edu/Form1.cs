@@ -33,10 +33,8 @@ namespace Morse_App_Edu
         string Version = "1.0.2a";
         string Form_text = "モールス符号早覚えゲーム";
         Morse morse = new Morse();
-        //MorseEventhandler morseEventhandler = new MorseEventhandler();
         bool q_judge;
         Stopwatch stopwatch = new Stopwatch();
-        //Stopwatch Stopwatch_morse = new Stopwatch();
         StreamWriter stream;
         Point Upperpanelpoint = new Point(0, 20);
         string Content_2;
@@ -48,16 +46,12 @@ namespace Morse_App_Edu
         Graphics Code_image2;
         SolidBrush Stripe = new SolidBrush(Color.Black);
         SolidBrush Back = new SolidBrush(Color.White);
-        //Pen Stripe = new Pen(Color.Black);
         public Form1()
         {
             InitializeComponent();
         }
         private void モールス信号WikipediaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //var client = new WebClient();
-            //int p = DateTime.Now .Hour ;
-            //MessageBox.Show(p.ToString());
         }
         private void Timer1_Tick(object sender, EventArgs e)
         {
@@ -65,10 +59,7 @@ namespace Morse_App_Edu
             h = DateTime.Now.Hour;
             m = DateTime.Now.Minute;
             s = DateTime.Now.Second;
-            //PerformanceCounter counter = new PerformanceCounter();
-            //counter.
             LocalTimeLabel1.Text = "只今の時間:" + h.ToString() + ":" + m.ToString() + ":" + s.ToString();
-            //ApplicationMemory.Text = "現在の使用メモリサイズ :";//+ Process.GetCurrentProcess().ToString();
         }
         private void Location_adjustment_load()//Form_Load関数実行時に一緒に実行。初期の位置調整関連の処理を格納
         {
@@ -95,7 +86,6 @@ namespace Morse_App_Edu
             trackBar2.Location = new Point(200, 210);
             trackBar1.Size = new Size(190, trackBar1.Height);
             trackBar2.Size = new Size(190, trackBar1.Height);
-
         }
         private void Form1_Load(object sender, EventArgs e)//順番変えると狂う場所があるため注意
         {
@@ -103,7 +93,6 @@ namespace Morse_App_Edu
             Title.Text = Text;
             Codeinput.Width = 350;
             MCode.BackColor = MCode.Parent.BackColor;
-            //stopwatch.Start();
             localtime.Stop();
             localtime.Start();
             GenePanel.Hide();
@@ -136,12 +125,6 @@ namespace Morse_App_Edu
         }
         private void Title_Click(object sender, EventArgs e)//
         {
-            //MessageBox.Show(GC.GetTotalMemory(true).ToString());
-            //char[] a;
-            //string b = "abcde";
-            //a = b.ToCharArray();
-            //MessageBox.Show(a.Length.ToString() + "\n" + a[0].ToString() + "\n" + a[1].ToString());
-            //MessageBox.Show(Stopwatch.GetTimestamp().ToString());
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)//試用:押下していた時間を計測
         {
@@ -184,11 +167,8 @@ namespace Morse_App_Edu
         }
         private void ResetCode_Click(object sender, EventArgs e)
         {
-            //GC.Collect();
             Codeinput.Text = "";
             backgroundWorker1.CancelAsync();
-
-            // backgroundWorker1.Dispose();
         }
         private void Quiz_Click(object sender, EventArgs e)
         {

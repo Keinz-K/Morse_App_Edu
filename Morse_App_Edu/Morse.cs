@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace Morse_App_Edu
 {
-    internal class Morse//アプリ関連の関数群。コントロールを指定しているものを移動させたものは、MorseEventhandler classに格納されている。
+    internal class Morse//アプリ関連の関数群。
     {
         public string DesktopFilepath = "C:\\Users\\" + Environment.UserName + "\\Desktop\\";
         public string Left(string target_str, int offset_length)//エクセルのLeft関数の再現
@@ -180,9 +180,6 @@ namespace Morse_App_Edu
                 }
                 Thread.Sleep(time_unit * 3);
             }
-            //長文を打ち込んだ際に、安全の為アプリケーションを停止、或いはプロセスを中断する機能が必要である。
-            //再生処理のみにアプリ内のプロセスの進行が占有されている。現状停止させる方法はあるので別に問題ないが素人向けでない為解決したい。
-
         }
         private void InitPictureDraw(PictureBox pictureBox)
         {
