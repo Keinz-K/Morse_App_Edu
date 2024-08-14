@@ -9,43 +9,26 @@ using System.Windows.Forms;
 //テーマ:単一の意匠により与えられた文字データを工夫したプログラム運用
 namespace Morse_App_Edu
 {
-    /*
-        2023/8/15 :開発着手開始
-                  :文字→コード変換機能の作成
-        2023/8/16 :横スクロール&改行防止機能の実装
-        2023/8/18 :Randbetweenの移植
-                  :クイズ機能の作成に着手。入力させるか選択させるかは要検討(入力の方が過去のプログラムを参照できるため楽ではあるが)
-                  :クイズ機能の作成。回答方式は必要に応じて後に追加予定である。
-        2023/8/19 :コード再生機能の作成開始。未知の要素が多い。
-                  :コード再生機能の作成。
-                  :主要機能の最低限の実装を完了。今後当分はUIの調整や未解決要素の解明を中心に追加する。
-        2023/8/21 :大体のUIの調整を完了。クイズモードに表示される符号の改装を開始。
-                  :符号表示処理の改装を完了。以前の表示処理はコメント化して残している。。
-        2023/9/3  :信号入力に伴う画像の生成機能の作成開始。併せて、使用フレームワークを.NET Freamwork 4.8 から 3.5に切り替えた。
-        2023/9/4  :画像生成機能の作成完了。3.5ではNet.httpの参照に問題が発生した。が現状ここを参照していない為問題ない。
-        2023/11/13:再生処理に関して、速度を調整できるようにした。位置調整の値の調整を別関数に格納した。
-        2023/11/15:再生処理について、半角スペースを入力時に待機するように処理を変更した。
-        2023/12/8 :再生処理中に停止ボタンが押せるよう、マルチスレッド化させることにした。
-        2024/2/3  :Morse.cs内の条件書式を修正。
-     */
     public partial class Form1 : Form
     {
-        string Version = "1.0.2a";
-        string Form_text = "モールス符号早覚えゲーム";
-        Morse morse = new Morse();
+        //オブジェクト接触時のイベントは動かせないので、処理をブロック化して別クラスに配置すること。
+        readonly string Version = "1.0.2a";
+        readonly string Form_text = "モールス符号早覚えゲーム";
+        readonly Morse morse = new Morse();//Morse.cs
+        readonly Dxf_writer dxf_Writer = new Dxf_writer();//Dxf_writer.cs
         bool q_judge;
         Stopwatch stopwatch = new Stopwatch();
-        StreamWriter stream;
+        StreamWriter stream;//使用時に宣言するのでも良いが、メモリ使用量が多くなる希ガス
         Point Upperpanelpoint = new Point(0, 20);
         string Content_2;
         Size Defaultformsize = new Size(450, 350);
-        Bitmap diagram;
+        Bitmap diagram;//クイズでの付表生成用
         Graphics morsecode;
-        SolidBrush brush = new SolidBrush(Color.Blue);
-        Bitmap Code_image;
+        readonly SolidBrush brush = new SolidBrush(Color.Blue);
+        Bitmap Code_image;//画像生成用
         Graphics Code_image2;
-        SolidBrush Stripe = new SolidBrush(Color.Black);
-        SolidBrush Back = new SolidBrush(Color.White);
+        readonly SolidBrush Stripe = new SolidBrush(Color.Black);
+        readonly SolidBrush Back = new SolidBrush(Color.White);
         public Form1()
         {
             InitializeComponent();
@@ -118,6 +101,17 @@ namespace Morse_App_Edu
             trackBar2_Scroll(sender, e);
             pictureBox2.Hide();
             backgroundWorker1.RunWorkerAsync();
+            //MessageBox.Show(dxf_Writer.apple);
+
+            dxf_Writer.SaveDialog_DxfSetting(saveFileDialog1);
+            if (saveFileDialog1.ShowDialog() == DialogResult.Cancel)//OK以外を選択したとき(エラー処理)
+            {//このタイミングでプロセスメモリが一様に増加している。
+                //Dispose();
+                return;
+            }
+            dxf_Writer.header();
+            dxf_Writer.Dxf_line(0, 0, 100, 100);
+            dxf_Writer.footer();
         }
         private void MorseTable_Click(object sender, EventArgs e)
         {
@@ -144,14 +138,8 @@ namespace Morse_App_Edu
                 if (e.KeyValue >= 65 && e.KeyValue <= 65 + 26 && Quizpanel.Visible == true)//練習モード(A~Z)時
                 {
                     //この部分の処理が動作しない事がある。
-                    if (e.KeyValue == 67)//C
-                    {
-                        Understand_Click(sender, e);
-                    }
-                    else if (e.KeyValue == 78)//N
-                    {
-                        Dontunderstand_Click(sender, e);
-                    }
+                    if (e.KeyValue == 67) Understand_Click(sender, e);//C
+                    else if (e.KeyValue == 78) Dontunderstand_Click(sender, e);//N
                     //確認用
                     //MessageBox.Show(e.KeyCode.ToString());
                 }
@@ -181,11 +169,8 @@ namespace Morse_App_Edu
         {
             int[] a;
             a = new int[Codeinput.TextLength];
-            char[] content;
-            int i;
-            content = Codeinput.Text.ToCharArray();
-            for (i = 0; i <= content.Length - 1; i++) a[i] = content[i];
-            for (i = 0; i <= Codeinput.TextLength - 1; i++)
+            for (int i = 0; i <= Codeinput.Text.ToCharArray().Length - 1; i++) a[i] = Codeinput.Text.ToCharArray()[i];
+            for (int i = 0; i <= Codeinput.TextLength - 1; i++)
             {
                 if (a[i] == 13)
                 {
@@ -202,12 +187,12 @@ namespace Morse_App_Edu
         }
         private void Dontunderstand_Click(object sender, EventArgs e)
         {
-            if (MCode.Visible == true)//(q_judge == true)
+            if (MCode.Visible == true)
             {
                 MCode.Visible = false;
                 NextQuestion();
             }
-            else if (MCode.Visible == false)//(q_judge == false)//pictureboxによる描画に処理を切り替える
+            else if (MCode.Visible == false)//pictureboxによる描画に処理を切り替える
             {
                 MCode.Visible = true;
                 char code = Convert.ToChar(Question.Text);
@@ -231,7 +216,7 @@ namespace Morse_App_Edu
                 int origin = 0;
                 for (int a = 1; a <= str.Length; a++)
                 {
-                    if (chars1[a - 1] == '.')
+                    if (chars1[a - 1] == '.')//モールスの付表が変わる事を前提に作っている
                     {
                         morsecode.FillPie(brush, origin, 0, 10, 10, 0, 360);//基本実装
                         origin += 10;
@@ -293,36 +278,14 @@ namespace Morse_App_Edu
                 MessageBox.Show("文字を入力してください", "Errorのお知らせ", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-
-            SaveDialog_DefaultSetting();
+            morse.SaveDialog_DefaultSetting(saveFileDialog1);
             char[] C;
-            if (saveFileDialog1.ShowDialog() == DialogResult.Cancel)//OK以外を選択したとき(エラー処理)
-            {//このタイミングでプロセスメモリが一様に増加している。
-                //Dispose();
-                return;
-            }
+            if (saveFileDialog1.ShowDialog() == DialogResult.Cancel) return;
             C = Codeinput.Text.ToCharArray();
             using (stream = new StreamWriter(saveFileDialog1.FileName, false, Encoding.UTF8))//ファイルの上書き作成
             {
             }
-            for (int i = 1; i <= Codeinput.TextLength; i++)
-            {
-                //ファイルに追記
-                using (stream = new StreamWriter(saveFileDialog1.FileName, true, Encoding.UTF8)) stream.Write(morse.MorseCode(C[i - 1]) + " ");
-            }
-            //stream.Dispose();
-        }
-        private void SaveDialog_DefaultSetting()
-        {
-            saveFileDialog1.FileName = "output";
-            saveFileDialog1.DefaultExt = "txt";
-            saveFileDialog1.Filter = "テキスト|*.txt*";
-        }
-        private void SaveDialog_ImageSetting()
-        {
-            saveFileDialog1.FileName = "output";
-            saveFileDialog1.DefaultExt = "png";
-            saveFileDialog1.Filter = "PNG|*.png*";
+            for (int i = 1; i <= Codeinput.TextLength; i++) using (stream = new StreamWriter(saveFileDialog1.FileName, true, Encoding.UTF8)) stream.Write(morse.MorseCode(C[i - 1]) + " ");
         }
         private void Generate_Image_Click(object sender, EventArgs e)//入力に応じた画像を生成する処理
         {
@@ -331,25 +294,19 @@ namespace Morse_App_Edu
                 MessageBox.Show("文字を入力してください", "Errorのお知らせ", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            SaveDialog_ImageSetting();
-            int i, j, k;
+            morse.SaveDialog_ImageSetting(saveFileDialog1);
             string Convert_content;
             int locate_origin = 0;
-            int len;
             char[] C;
-            if (saveFileDialog1.ShowDialog() == DialogResult.Cancel)//OK以外を選択したとき(エラー処理)
-            {
-                return;
-            }
-            j = Codeinput.TextLength;
+            if (saveFileDialog1.ShowDialog() == DialogResult.Cancel) return;//OK以外を選択したとき(エラー処理)
             //確認用
             C = Codeinput.Text.ToCharArray();
             char[] C_2;
-            for (i = 1; i <= j; i++)//PIctureboxのWidth値の計上
+            for (int i = 1; i <= Codeinput.TextLength; i++)//PIctureboxのWidth値の計上
             {
                 Convert_content = morse.MorseCode(C[i - 1]);
                 C_2 = Convert_content.ToCharArray();
-                for (k = 0; k <= Convert_content.Length - 1; k++)
+                for (int k = 0; k <= Convert_content.Length - 1; k++)
                 {
                     if (C_2[k] == '.') locate_origin += 1;
                     else if (C_2[k] == '-') locate_origin += 3;
@@ -362,29 +319,25 @@ namespace Morse_App_Edu
             Code_image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             Code_image2 = Graphics.FromImage(Code_image);
             Code_image2.FillRectangle(Back, -1, -1, pictureBox1.Width + 1, pictureBox1.Height + 1);
-            for (i = 1; i <= j; i++)//描画処理
+            for (int i = 1; i <= Codeinput.TextLength; i++)//描画処理
             {
                 Convert_content = morse.MorseCode(C[i - 1]);
-                len = Convert_content.Length;
                 C_2 = Convert_content.ToCharArray();
-                for (k = 1; k <= Convert_content.Length; k++)
+                for (int k = 1; k <= Convert_content.Length; k++)
                 {
-                    if (C_2[k - 1] == '.')
-                    {
-                        Code_image2.FillRectangle(Stripe, locate_origin, -1, 1, pictureBox1.Height + 1);
-                        locate_origin += 1;
-                    }
-                    else if (C_2[k - 1] == '-')
-                    {
-                        Code_image2.FillRectangle(Stripe, locate_origin, -1, 3, pictureBox1.Height + 1); ;
-                        locate_origin += 3;
-                    }
+                    if (C_2[k - 1] == '.') FillRect(1, locate_origin);
+                    else if (C_2[k - 1] == '-') FillRect(3, locate_origin);
                     if (k != Convert_content.Length) locate_origin += 1;
                 }
                 locate_origin += 3;
             }
             pictureBox1.Image = Code_image;
             Code_image.Save(saveFileDialog1.FileName, ImageFormat.Png);
+        }
+        private void FillRect(int size, int locate)
+        {
+            Code_image2.FillRectangle(Stripe, locate, -1, size, pictureBox1.Height + 1);
+            locate += size;
         }
         private void Play_Click(object sender, EventArgs e)
         {
@@ -404,7 +357,6 @@ namespace Morse_App_Edu
         }
         private void backgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            //morse.Play_Click(Codeinput.Text, trackBar1.Value, trackBar2.Value);
             morse.Play_Click(Codeinput.Text, a, b);
         }
         private void backgroundWorker1_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)

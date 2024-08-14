@@ -74,6 +74,7 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.label4 = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
@@ -237,6 +238,7 @@
             // 
             // GenePanel
             // 
+            this.GenePanel.Controls.Add(this.label4);
             this.GenePanel.Controls.Add(this.label2);
             this.GenePanel.Controls.Add(this.trackBar2);
             this.GenePanel.Controls.Add(this.label1);
@@ -246,9 +248,9 @@
             this.GenePanel.Controls.Add(this.Play);
             this.GenePanel.Controls.Add(this.GenerateOrSave);
             this.GenePanel.Controls.Add(this.Codeinput);
-            this.GenePanel.Location = new System.Drawing.Point(433, 105);
+            this.GenePanel.Location = new System.Drawing.Point(460, 140);
             this.GenePanel.Name = "GenePanel";
-            this.GenePanel.Size = new System.Drawing.Size(314, 230);
+            this.GenePanel.Size = new System.Drawing.Size(235, 472);
             this.GenePanel.TabIndex = 7;
             // 
             // label2
@@ -481,7 +483,7 @@
             // Dakenrensyuu
             // 
             this.Dakenrensyuu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.Dakenrensyuu.Location = new System.Drawing.Point(598, 48);
+            this.Dakenrensyuu.Location = new System.Drawing.Point(570, 50);
             this.Dakenrensyuu.Name = "Dakenrensyuu";
             this.Dakenrensyuu.Size = new System.Drawing.Size(200, 100);
             this.Dakenrensyuu.TabIndex = 9;
@@ -510,6 +512,15 @@
             this.backgroundWorker1.WorkerSupportsCancellation = true;
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(22, 251);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(43, 15);
+            this.label4.TabIndex = 16;
+            this.label4.Text = "label4";
             // 
             // Form1
             // 
@@ -599,6 +610,7 @@
         private System.Windows.Forms.TrackBar trackBar2;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.Label label4;
     }
 }
 

@@ -37,8 +37,7 @@ namespace Morse_App_Edu
         }
         public void Quizpanel_Click(Control control)
         {
-            int i = RandBetween(1, 26);
-            char a = (char)(i + 64);
+            char a = (char)(RandBetween(1, 26) + 64);
             control.Text = a.ToString();
         }
         public void HorizonalAlignCenter(Control control, int y)//コントロールのx軸を親コントロール内中心位置に合わせる関数。y軸方向は任意値
@@ -127,33 +126,28 @@ namespace Morse_App_Edu
         public int RandBetween(int min, int max)//Excelの関数の再現
         {
             Random random = new Random();
-            int a = max - min;
             int i = 0;
-            int j;
             double b = random.NextDouble();
-            //MessageBox.Show(b.ToString());
-            for (j = min; j <= max; j++)
+            for (int j = min; j <= max; j++)
             {
                 i++;
-                if (1 / (double)a * i >= b) break;
+                if (1 / (double)(max - min) * i >= b) break;
             }
             return i;
         }
         public void Play_Click(string textBox, int time_unit, int frequency)//入力に応じた音声再生処理関数
         {
-            int len = textBox.Length;
-            int[] aa = new int[len];
-            string[] audio = new string[len];
+            int[] aa = new int[textBox.Length];
+            string[] audio = new string[textBox.Length];
             int i, j;
             char[] aa_2;
             bool space, number, alphabet;
-            for (i = 1; i <= len; i++)//文字に対応するコードの代入
+            for (i = 1; i <= textBox.Length; i++)//文字に対応するコードの代入
             {
                 aa[i - 1] = Convert.ToChar(textBox.Substring(i - 1, 1));
                 space = aa[i - 1] == 32;
                 number = aa[i - 1] >= 48 && aa[i - 1] <= 59;
                 alphabet = aa[i - 1] >= 65 && aa[i - 1] <= 122;
-                //MessageBox.Show(((int)(aa[i - 1])).ToString());
                 if (space || number || alphabet) audio[i - 1] = MorseCode(aa[i - 1]);
                 else
                 {
@@ -161,8 +155,7 @@ namespace Morse_App_Edu
                     return;
                 }
             }//代入終わり
-
-            for (i = 1; i <= len; i++)//音声再生処理
+            for (i = 1; i <= textBox.Length; i++)//音声再生処理
             {
                 int len_2 = audio[i - 1].Length;
                 aa_2 = new char[len_2];//???
@@ -181,18 +174,17 @@ namespace Morse_App_Edu
                 Thread.Sleep(time_unit * 3);
             }
         }
-        private void InitPictureDraw(PictureBox pictureBox)
+        public void SaveDialog_DefaultSetting(SaveFileDialog saveFileDialog1)
         {
-            Bitmap bitmap;
-            Graphics graphics;
-            Pen blackpen = new Pen(Color.Black, 1f);
-            SolidBrush solidBrush = new SolidBrush(Color.DarkRed);
-            bitmap = new Bitmap(pictureBox.Width, pictureBox.Height);
-            graphics = Graphics.FromImage(bitmap);
-            graphics.DrawLine(blackpen, 10, 10, 30, 30);
-            graphics.DrawPie(blackpen, 10, 10, 30, 30, 0, 360);
-            graphics.FillPie(solidBrush, 50, 50, 10, 10, 90, 180);//時計回り
-            pictureBox.Image = bitmap;
+            saveFileDialog1.FileName = "output";
+            saveFileDialog1.DefaultExt = "txt";
+            saveFileDialog1.Filter = "テキスト|*.txt*";
+        }
+        public void SaveDialog_ImageSetting(SaveFileDialog saveFileDialog1)
+        {
+            saveFileDialog1.FileName = "output";
+            saveFileDialog1.DefaultExt = "png";
+            saveFileDialog1.Filter = "PNG|*.png*";
         }
 
     }
