@@ -6,6 +6,7 @@ namespace Morse_App_Edu
 {
     internal class Dxf_writer//jwファイル用の図形作成class (VBA版の移植)
     {
+        //2024/8/16 : 引数の方をintにしているが、実際にintで済む訳がないので修正する。
         public string apple = "dxf_writer";
         private string path;
         private StreamWriter stream;
@@ -16,7 +17,103 @@ namespace Morse_App_Edu
             saveFileDialog.Filter = "DXF|*.dxf*";
             path = saveFileDialog.FileName;
         }
-        public void Dxf_line(int xStart,int yStart,int xEnd,int yEnd)
+        public void Dxf_Rect(int X_pos,int Y_pos,int Width,int Height)
+        {
+            Dxf_line(X_pos, Y_pos, X_pos, Y_pos + Height);
+            Dxf_line(X_pos, Y_pos + Height, X_pos + Width, Y_pos + Height);
+            Dxf_line(X_pos + Width, Y_pos + Height, X_pos + Width, Y_pos);
+            Dxf_line(X_pos + Width, Y_pos, X_pos, Y_pos);
+        }
+        public void Dxf_Text(int X_pos,int Y_pos,int str_size,int width_scale,int degree,string str)
+        {
+            using (stream = new StreamWriter(path, true, Encoding.UTF8))
+            {
+                stream.WriteLine("0");
+                stream.WriteLine("TEXT");
+                stream.WriteLine("8");
+                stream.WriteLine("_0-1_");
+                stream.WriteLine("62");
+                stream.WriteLine("4");
+                stream.WriteLine("10");
+                stream.WriteLine(X_pos);
+                stream.WriteLine("20");
+                stream.WriteLine(Y_pos);
+                stream.WriteLine("40");
+                stream.WriteLine(str_size);
+                stream.WriteLine("41");
+                stream.WriteLine(width_scale);
+                stream.WriteLine("50");
+                stream.WriteLine(degree);
+                stream.WriteLine("1");
+                stream.WriteLine(str);
+            }
+        }
+        public void Dxf_Arc(int radius,int Pos_X,int Pos_Y,int Deg_start,int Deg_end)
+        {
+            using (stream = new StreamWriter(path, true, Encoding.UTF8))
+            {
+                stream.WriteLine("0");
+                stream.WriteLine("ARC");
+                stream.WriteLine("8");
+                stream.WriteLine("_0-1_");
+                stream.WriteLine("6");
+                stream.WriteLine("CONTINUOUS");
+                stream.WriteLine("62");
+                stream.WriteLine("7");
+                stream.WriteLine("10");
+                stream.WriteLine(Pos_X);
+                stream.WriteLine("20");
+                stream.WriteLine(Pos_Y);
+                stream.WriteLine("40");
+                stream.WriteLine(radius);
+                stream.WriteLine("50");
+                stream.WriteLine(Deg_start);
+                stream.WriteLine("51");
+                stream.WriteLine(Deg_end);
+            }
+        }
+        public void Dxf_Circle_Origin(int radius)
+        {
+            using (stream = new StreamWriter(path, true, Encoding.UTF8))
+            {
+                stream.WriteLine("0");
+                stream.WriteLine("CIRCLE");
+                stream.WriteLine("8");
+                stream.WriteLine("_0-1_");
+                stream.WriteLine("6");
+                stream.WriteLine("CONTINUOUS");
+                stream.WriteLine("62");
+                stream.WriteLine("7");
+                stream.WriteLine("10");
+                stream.WriteLine("0");
+                stream.WriteLine("20");
+                stream.WriteLine("0");
+                stream.WriteLine("40");
+                stream.WriteLine(radius);
+            }
+        }
+
+        public void Dxf_Circle(int Pos_X,int Pos_Y,int radius)
+        {
+            using (stream = new StreamWriter(path, true, Encoding.UTF8))
+            {
+                stream.WriteLine("0");
+                stream.WriteLine("CIRCLE");
+                stream.WriteLine("8");
+                stream.WriteLine("_0-1_");
+                stream.WriteLine("6");
+                stream.WriteLine("CONTINUOUS");
+                stream.WriteLine("62");
+                stream.WriteLine("7");
+                stream.WriteLine("10");
+                stream.WriteLine(Pos_X);
+                stream.WriteLine("20");
+                stream.WriteLine(Pos_Y);
+                stream.WriteLine("40");
+                stream.WriteLine(radius);
+            }
+        }
+        public void Dxf_line(int xStart, int yStart, int xEnd, int yEnd)
         {
             using (stream = new StreamWriter(path, true, Encoding.UTF8))
             {

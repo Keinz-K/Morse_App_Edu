@@ -273,11 +273,7 @@ namespace Morse_App_Edu
         }
         private void GenerateOrSave_Click(object sender, EventArgs e)
         {
-            if (Codeinput.Text.Length == 0)
-            {
-                MessageBox.Show("文字を入力してください", "Errorのお知らせ", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+            if (morse.Notice_error(Codeinput.Text.Length)) return;
             morse.SaveDialog_DefaultSetting(saveFileDialog1);
             char[] C;
             if (saveFileDialog1.ShowDialog() == DialogResult.Cancel) return;
@@ -289,11 +285,7 @@ namespace Morse_App_Edu
         }
         private void Generate_Image_Click(object sender, EventArgs e)//入力に応じた画像を生成する処理
         {
-            if (Codeinput.Text.Length == 0)
-            {
-                MessageBox.Show("文字を入力してください", "Errorのお知らせ", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+            if (morse.Notice_error(Codeinput.Text.Length)) return;
             morse.SaveDialog_ImageSetting(saveFileDialog1);
             string Convert_content;
             int locate_origin = 0;

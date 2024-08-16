@@ -49,6 +49,19 @@ namespace Morse_App_Edu
         {
             control.Location = new Point((int)(control.Parent.Width * ratio - control.Width / 2), y);
         }
+        public bool Notice_error(int length)
+        {
+            if (length == 0)
+            {
+                MessageBox.Show("文字を入力してください", "Errorのお知らせ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public void Yetdevelop()//作り切れていない機能にアクセス出来るボタンに触れた時にこれを表示させる。
         {
             MessageBox.Show("未だ未開発です。今後のアップデートにご期待ください。", "お知らせ", MessageBoxButtons.OK, MessageBoxIcon.Information);
