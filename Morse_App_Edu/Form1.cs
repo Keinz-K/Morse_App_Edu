@@ -101,17 +101,18 @@ namespace Morse_App_Edu
             trackBar2_Scroll(sender, e);
             pictureBox2.Hide();
             backgroundWorker1.RunWorkerAsync();
-            //MessageBox.Show(dxf_Writer.apple);
-
+            /*
             dxf_Writer.SaveDialog_DxfSetting(saveFileDialog1);
             if (saveFileDialog1.ShowDialog() == DialogResult.Cancel)//OK以外を選択したとき(エラー処理)
             {//このタイミングでプロセスメモリが一様に増加している。
                 //Dispose();
                 return;
             }
-            dxf_Writer.header();
-            dxf_Writer.Dxf_line(0, 0, 100, 100);
+
+            dxf_Writer.header(saveFileDialog1.FileName);
+            dxf_Writer.Dxf_Sector(20, 50, 20, 120, 0, 10);
             dxf_Writer.footer();
+            */
         }
         private void MorseTable_Click(object sender, EventArgs e)
         {
@@ -351,6 +352,12 @@ namespace Morse_App_Edu
         {
             morse.Play_Click(Codeinput.Text, a, b);
         }
+
+        private void Dxf_Sector_morse_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void backgroundWorker1_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
             Text = Form_text;

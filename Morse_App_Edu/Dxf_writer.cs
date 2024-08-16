@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
@@ -6,7 +7,9 @@ namespace Morse_App_Edu
 {
     internal class Dxf_writer//jwファイル用の図形作成class (VBA版の移植)
     {
-        //2024/8/16 : 引数の方をintにしているが、実際にintで済む訳がないので修正する。
+        /*
+
+         */
         public string apple = "dxf_writer";
         private string path;
         private StreamWriter stream;
@@ -15,16 +18,28 @@ namespace Morse_App_Edu
             saveFileDialog.FileName = "output";
             saveFileDialog.DefaultExt = "dxf";
             saveFileDialog.Filter = "DXF|*.dxf*";
-            path = saveFileDialog.FileName;
+            //path = saveFileDialog.FileName;
         }
-        public void Dxf_Rect(int X_pos,int Y_pos,int Width,int Height)
+        private double degTorad(double deg)
+        {
+            return deg * Math.PI / 180;
+        }
+        public void Dxf_Sector(double inside_radius, double outside_radius, double s_deg, double e_deg, double x_pos, double y_pos)
+        {
+            //insideが0以下の時、円周角が360°になるときは、別の図形になるように処理したい。
+            Dxf_Arc(inside_radius, x_pos, y_pos, s_deg, e_deg);
+            Dxf_Arc(outside_radius, x_pos, y_pos, s_deg, e_deg);
+            Dxf_line(x_pos + Math.Cos(degTorad(s_deg)) * inside_radius, y_pos + Math.Sin(degTorad(s_deg)) * inside_radius, x_pos + Math.Cos(degTorad(s_deg)) * outside_radius, y_pos + Math.Sin(degTorad(s_deg)) * outside_radius);
+            Dxf_line(x_pos + Math.Cos(degTorad(e_deg)) * inside_radius, y_pos + Math.Sin(degTorad(e_deg)) * inside_radius, x_pos + Math.Cos(degTorad(e_deg)) * outside_radius, y_pos + Math.Sin(degTorad(e_deg)) * outside_radius);
+        }
+        public void Dxf_Rect(double X_pos, double Y_pos, double Width, double Height)
         {
             Dxf_line(X_pos, Y_pos, X_pos, Y_pos + Height);
             Dxf_line(X_pos, Y_pos + Height, X_pos + Width, Y_pos + Height);
             Dxf_line(X_pos + Width, Y_pos + Height, X_pos + Width, Y_pos);
             Dxf_line(X_pos + Width, Y_pos, X_pos, Y_pos);
         }
-        public void Dxf_Text(int X_pos,int Y_pos,int str_size,int width_scale,int degree,string str)
+        public void Dxf_Text(double X_pos, double Y_pos, double str_size, double width_scale, double degree, string str)
         {
             using (stream = new StreamWriter(path, true, Encoding.UTF8))
             {
@@ -48,7 +63,7 @@ namespace Morse_App_Edu
                 stream.WriteLine(str);
             }
         }
-        public void Dxf_Arc(int radius,int Pos_X,int Pos_Y,int Deg_start,int Deg_end)
+        public void Dxf_Arc(double radius, double Pos_X, double Pos_Y, double Deg_start, double Deg_end)
         {
             using (stream = new StreamWriter(path, true, Encoding.UTF8))
             {
@@ -72,7 +87,7 @@ namespace Morse_App_Edu
                 stream.WriteLine(Deg_end);
             }
         }
-        public void Dxf_Circle_Origin(int radius)
+        public void Dxf_Circle_Origin(double radius)
         {
             using (stream = new StreamWriter(path, true, Encoding.UTF8))
             {
@@ -93,7 +108,7 @@ namespace Morse_App_Edu
             }
         }
 
-        public void Dxf_Circle(int Pos_X,int Pos_Y,int radius)
+        public void Dxf_Circle(double Pos_X, double Pos_Y, double radius)
         {
             using (stream = new StreamWriter(path, true, Encoding.UTF8))
             {
@@ -113,7 +128,7 @@ namespace Morse_App_Edu
                 stream.WriteLine(radius);
             }
         }
-        public void Dxf_line(int xStart, int yStart, int xEnd, int yEnd)
+        public void Dxf_line(double xStart, double yStart, double xEnd, double yEnd)
         {
             using (stream = new StreamWriter(path, true, Encoding.UTF8))
             {
@@ -145,8 +160,9 @@ namespace Morse_App_Edu
                 stream.WriteLine("EOF");
             }
         }
-        public void header()
+        public void header(string path_a)
         {
+            path = path_a;
             using (stream = new StreamWriter(path, false, Encoding.UTF8))//ファイルの上書き作成
             {
                 stream.WriteLine("0");
