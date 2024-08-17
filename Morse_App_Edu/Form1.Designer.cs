@@ -49,6 +49,7 @@
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.GenePanel = new System.Windows.Forms.Panel();
+            this.Dxf_Sector_morse = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.trackBar2 = new System.Windows.Forms.TrackBar();
             this.label1 = new System.Windows.Forms.Label();
@@ -74,7 +75,6 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.Dxf_Sector_morse = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
@@ -109,7 +109,7 @@
             this.Other});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(800, 31);
+            this.toolStrip1.Size = new System.Drawing.Size(800, 27);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -122,7 +122,7 @@
             this.Recognize.Image = ((System.Drawing.Image)(resources.GetObject("Recognize.Image")));
             this.Recognize.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.Recognize.Name = "Recognize";
-            this.Recognize.Size = new System.Drawing.Size(54, 28);
+            this.Recognize.Size = new System.Drawing.Size(54, 24);
             this.Recognize.Text = "知る";
             // 
             // WikipediaLink
@@ -149,7 +149,7 @@
             this.Quiz});
             this.Study.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.Study.Name = "Study";
-            this.Study.Size = new System.Drawing.Size(61, 28);
+            this.Study.Size = new System.Drawing.Size(61, 24);
             this.Study.Text = "覚える";
             // 
             // Practice
@@ -171,7 +171,7 @@
             this.Generate.AccessibleDescription = "";
             this.Generate.AccessibleName = "";
             this.Generate.Name = "Generate";
-            this.Generate.Size = new System.Drawing.Size(62, 28);
+            this.Generate.Size = new System.Drawing.Size(62, 24);
             this.Generate.Text = "生成する";
             this.Generate.ToolTipText = "アルファベットからモールス信号を生成、又は再生します。";
             this.Generate.Click += new System.EventHandler(this.Generate_Click);
@@ -179,7 +179,7 @@
             // Other
             // 
             this.Other.Name = "Other";
-            this.Other.Size = new System.Drawing.Size(47, 28);
+            this.Other.Size = new System.Drawing.Size(47, 24);
             this.Other.Text = "その他";
             this.Other.Click += new System.EventHandler(this.Other_Click);
             // 
@@ -252,6 +252,16 @@
             this.GenePanel.Name = "GenePanel";
             this.GenePanel.Size = new System.Drawing.Size(235, 472);
             this.GenePanel.TabIndex = 7;
+            // 
+            // Dxf_Sector_morse
+            // 
+            this.Dxf_Sector_morse.AutoSize = true;
+            this.Dxf_Sector_morse.Location = new System.Drawing.Point(22, 251);
+            this.Dxf_Sector_morse.Name = "Dxf_Sector_morse";
+            this.Dxf_Sector_morse.Size = new System.Drawing.Size(67, 15);
+            this.Dxf_Sector_morse.TabIndex = 16;
+            this.Dxf_Sector_morse.Text = "円弧生成";
+            this.Dxf_Sector_morse.Click += new System.EventHandler(this.Dxf_Sector_morse_Click);
             // 
             // label2
             // 
@@ -512,16 +522,6 @@
             this.backgroundWorker1.WorkerSupportsCancellation = true;
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
-            // 
-            // Dxf_Sector_morse
-            // 
-            this.Dxf_Sector_morse.AutoSize = true;
-            this.Dxf_Sector_morse.Location = new System.Drawing.Point(22, 251);
-            this.Dxf_Sector_morse.Name = "Dxf_Sector_morse";
-            this.Dxf_Sector_morse.Size = new System.Drawing.Size(67, 15);
-            this.Dxf_Sector_morse.TabIndex = 16;
-            this.Dxf_Sector_morse.Text = "円弧生成";
-            this.Dxf_Sector_morse.Click += new System.EventHandler(this.Dxf_Sector_morse_Click);
             // 
             // Form1
             // 

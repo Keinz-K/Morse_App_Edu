@@ -12,7 +12,7 @@ namespace Morse_App_Edu
     public partial class Form1 : Form
     {
         //オブジェクト接触時のイベントは動かせないので、処理をブロック化して別クラスに配置すること。
-        readonly string Version = "1.0.2a";
+        readonly string Version = "1.0.3a";
         readonly string Form_text = "モールス符号早覚えゲーム";
         readonly Morse morse = new Morse();//Morse.cs
         readonly Dxf_writer dxf_Writer = new Dxf_writer();//Dxf_writer.cs
@@ -57,6 +57,7 @@ namespace Morse_App_Edu
             GenerateOrSave.Location = new Point(40, 100);
             ResetCode.Location = new Point(40, 120);
             Play.Location = new Point(40, 140);
+            Dxf_Sector_morse.Location = new Point(40, 180);
             Generate_Image.Location = new Point(40, 160);
             morse.HorizonalAlignUserValue(Understand, 0.33f, 150);
             morse.HorizonalAlignUserValue(Dontunderstand, 0.66f, 150);
@@ -101,18 +102,6 @@ namespace Morse_App_Edu
             trackBar2_Scroll(sender, e);
             pictureBox2.Hide();
             backgroundWorker1.RunWorkerAsync();
-            /*
-            dxf_Writer.SaveDialog_DxfSetting(saveFileDialog1);
-            if (saveFileDialog1.ShowDialog() == DialogResult.Cancel)//OK以外を選択したとき(エラー処理)
-            {//このタイミングでプロセスメモリが一様に増加している。
-                //Dispose();
-                return;
-            }
-
-            dxf_Writer.header(saveFileDialog1.FileName);
-            dxf_Writer.Dxf_Sector(20, 50, 20, 120, 0, 10);
-            dxf_Writer.footer();
-            */
         }
         private void MorseTable_Click(object sender, EventArgs e)
         {
@@ -355,8 +344,67 @@ namespace Morse_App_Edu
 
         private void Dxf_Sector_morse_Click(object sender, EventArgs e)
         {
-
+            if (morse.Notice_error(Codeinput.Text.Length)) return;
+            dxf_Writer.SaveDialog_DxfSetting(saveFileDialog1);
+            string Convert_content;
+            int locate_origin = 0;
+            char[] C;
+            if (saveFileDialog1.ShowDialog() == DialogResult.Cancel) return;//OK以外を選択したとき(エラー処理)
+            //確認用
+            C = Codeinput.Text.ToCharArray();
+            char[] C_2;
+            for (int i = 1; i <= Codeinput.TextLength; i++)//morse のコードから分割数の算出
+            {
+                Convert_content = morse.MorseCode(C[i - 1]);
+                C_2 = Convert_content.ToCharArray();
+                for (int k = 0; k <= Convert_content.Length - 1; k++)
+                {
+                    if (C_2[k] == '.') locate_origin += 1;
+                    else if (C_2[k] == '-') locate_origin += 3;
+                    if (k != Convert_content.Length) locate_origin += 1;
+                }
+                locate_origin += 2;
+            }
+            Console.WriteLine("分割数 : " + locate_origin);
+            double bb = locate_origin;
+            dxf_Writer.header(saveFileDialog1.FileName);
+            double aa = 0;
+            //double x_end_pos = 0;
+            //double y_end_pos = 0;
+            /*
+            for (int kk = 0; kk <= locate_origin; kk++)
+            {
+                x_end_pos = 19 * Math.Cos((double)((double)kk / (double)locate_origin)*360 * Math.PI / 180);
+                y_end_pos = 19 * Math.Sin((double)((double)kk / (double)locate_origin)*360 * Math.PI / 180);
+                //Console.WriteLine(kk + " : " + x_end_pos + "\t" + y_end_pos + "\t" + (double)((double)kk / (double)locate_origin));
+                //dxf_Writer.Dxf_line(0, 0, x_end_pos, y_end_pos);
+            }
+            */
+            //分割生成計算
+            for (int i = 1; i <= Codeinput.TextLength; i++)//扇の描画
+            {
+                Convert_content = morse.MorseCode(C[i - 1]);
+                C_2 = Convert_content.ToCharArray();
+                for (int k = 0; k <= Convert_content.Length - 1; k++)
+                {
+                    aa = locate_origin / bb;
+                    if (C_2[k] == '.')
+                    {
+                        dxf_Writer.Dxf_Sector(20, 50, aa * 360, (locate_origin + 1) / bb * 360, 0, 0);
+                        locate_origin += 1;
+                    }
+                    else if (C_2[k] == '-')
+                    {
+                        dxf_Writer.Dxf_Sector(20, 50, aa * 360, (locate_origin + 3) / bb * 360, 0, 0);
+                        locate_origin += 3;
+                    }
+                    if (k != Convert_content.Length) locate_origin += 1;
+                }
+                locate_origin += 2;
+            }
+            dxf_Writer.footer();
         }
+
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
