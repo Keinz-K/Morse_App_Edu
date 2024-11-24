@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Reflection;
+
 //using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -12,7 +14,6 @@ namespace Morse_App_Edu
     public partial class Form1 : Form
     {
         //オブジェクト接触時のイベントは動かせないので、処理をブロック化して別クラスに配置すること。
-        readonly string Version = "1.0.3a";
         readonly string Form_text = "モールス符号早覚えゲーム";
         readonly Morse morse = new Morse();//Morse.cs
         readonly Dxf_writer dxf_Writer = new Dxf_writer();//Dxf_writer.cs
@@ -247,8 +248,11 @@ namespace Morse_App_Edu
 
         }
         private void Other_Click(object sender, EventArgs e)
+
         {
-            MessageBox.Show("バージョン:" + Version + "\n作成者:keinz\n", "Version info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            var assem = System.Reflection.Assembly.GetExecutingAssembly();
+
+            MessageBox.Show("バージョン:" + assem.GetName().Version + "\n作成者:Keinz-K\n" + assem.GetCustomAttribute<AssemblyCopyrightAttribute>().Copyright, "Version info", MessageBoxButtons.OK, MessageBoxIcon.Information);
             //Title_Click(sender, e);
         }
         private void ReferenceMorseTable_Click(object sender, EventArgs e)
@@ -369,17 +373,6 @@ namespace Morse_App_Edu
             double bb = locate_origin;
             dxf_Writer.header(saveFileDialog1.FileName);
             double aa = 0;
-            //double x_end_pos = 0;
-            //double y_end_pos = 0;
-            /*
-            for (int kk = 0; kk <= locate_origin; kk++)
-            {
-                x_end_pos = 19 * Math.Cos((double)((double)kk / (double)locate_origin)*360 * Math.PI / 180);
-                y_end_pos = 19 * Math.Sin((double)((double)kk / (double)locate_origin)*360 * Math.PI / 180);
-                //Console.WriteLine(kk + " : " + x_end_pos + "\t" + y_end_pos + "\t" + (double)((double)kk / (double)locate_origin));
-                //dxf_Writer.Dxf_line(0, 0, x_end_pos, y_end_pos);
-            }
-            */
             //分割生成計算
             for (int i = 1; i <= Codeinput.TextLength; i++)//扇の描画
             {
@@ -405,6 +398,10 @@ namespace Morse_App_Edu
             dxf_Writer.footer();
         }
 
+        private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {

@@ -92,9 +92,10 @@
             // 
             this.Title.AutoSize = true;
             this.Title.Font = new System.Drawing.Font("MS UI Gothic", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.Title.Location = new System.Drawing.Point(3, 9);
+            this.Title.Location = new System.Drawing.Point(2, 7);
+            this.Title.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.Title.Name = "Title";
-            this.Title.Size = new System.Drawing.Size(411, 33);
+            this.Title.Size = new System.Drawing.Size(335, 27);
             this.Title.TabIndex = 0;
             this.Title.Text = "モールス信号早覚えゲーム(仮)";
             this.Title.Click += new System.EventHandler(this.Title_Click);
@@ -109,9 +110,10 @@
             this.Other});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(800, 27);
+            this.toolStrip1.Size = new System.Drawing.Size(600, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
+            this.toolStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.toolStrip1_ItemClicked);
             // 
             // Recognize
             // 
@@ -122,14 +124,14 @@
             this.Recognize.Image = ((System.Drawing.Image)(resources.GetObject("Recognize.Image")));
             this.Recognize.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.Recognize.Name = "Recognize";
-            this.Recognize.Size = new System.Drawing.Size(54, 24);
+            this.Recognize.Size = new System.Drawing.Size(44, 22);
             this.Recognize.Text = "知る";
             // 
             // WikipediaLink
             // 
             this.WikipediaLink.ForeColor = System.Drawing.Color.Blue;
             this.WikipediaLink.Name = "WikipediaLink";
-            this.WikipediaLink.Size = new System.Drawing.Size(243, 26);
+            this.WikipediaLink.Size = new System.Drawing.Size(194, 22);
             this.WikipediaLink.Text = "モールス信号(Wikipedia)";
             this.WikipediaLink.ToolTipText = "ブラウザを開きます";
             this.WikipediaLink.Click += new System.EventHandler(this.モールス信号WikipediaToolStripMenuItem_Click);
@@ -137,7 +139,7 @@
             // ReferenceMorseTable
             // 
             this.ReferenceMorseTable.Name = "ReferenceMorseTable";
-            this.ReferenceMorseTable.Size = new System.Drawing.Size(243, 26);
+            this.ReferenceMorseTable.Size = new System.Drawing.Size(194, 22);
             this.ReferenceMorseTable.Text = "モールス表を参照する";
             this.ReferenceMorseTable.Click += new System.EventHandler(this.ReferenceMorseTable_Click);
             // 
@@ -149,20 +151,20 @@
             this.Quiz});
             this.Study.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.Study.Name = "Study";
-            this.Study.Size = new System.Drawing.Size(61, 24);
+            this.Study.Size = new System.Drawing.Size(50, 22);
             this.Study.Text = "覚える";
             // 
             // Practice
             // 
             this.Practice.Name = "Practice";
-            this.Practice.Size = new System.Drawing.Size(165, 26);
+            this.Practice.Size = new System.Drawing.Size(132, 22);
             this.Practice.Text = "打鍵練習";
             this.Practice.Click += new System.EventHandler(this.Practice_Click);
             // 
             // Quiz
             // 
             this.Quiz.Name = "Quiz";
-            this.Quiz.Size = new System.Drawing.Size(165, 26);
+            this.Quiz.Size = new System.Drawing.Size(132, 22);
             this.Quiz.Text = "クイズ(A~Z)";
             this.Quiz.Click += new System.EventHandler(this.Quiz_Click);
             // 
@@ -171,7 +173,7 @@
             this.Generate.AccessibleDescription = "";
             this.Generate.AccessibleName = "";
             this.Generate.Name = "Generate";
-            this.Generate.Size = new System.Drawing.Size(62, 24);
+            this.Generate.Size = new System.Drawing.Size(50, 22);
             this.Generate.Text = "生成する";
             this.Generate.ToolTipText = "アルファベットからモールス信号を生成、又は再生します。";
             this.Generate.Click += new System.EventHandler(this.Generate_Click);
@@ -179,7 +181,7 @@
             // Other
             // 
             this.Other.Name = "Other";
-            this.Other.Size = new System.Drawing.Size(47, 24);
+            this.Other.Size = new System.Drawing.Size(38, 22);
             this.Other.Text = "その他";
             this.Other.Click += new System.EventHandler(this.Other_Click);
             // 
@@ -189,22 +191,23 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.LocalTimeLabel1,
             this.ApplicationMemory});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 424);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 338);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(800, 26);
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 10, 0);
+            this.statusStrip1.Size = new System.Drawing.Size(600, 22);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // LocalTimeLabel1
             // 
             this.LocalTimeLabel1.Name = "LocalTimeLabel1";
-            this.LocalTimeLabel1.Size = new System.Drawing.Size(84, 20);
+            this.LocalTimeLabel1.Size = new System.Drawing.Size(68, 17);
             this.LocalTimeLabel1.Text = "只今の時間:";
             // 
             // ApplicationMemory
             // 
             this.ApplicationMemory.Name = "ApplicationMemory";
-            this.ApplicationMemory.Size = new System.Drawing.Size(151, 20);
+            this.ApplicationMemory.Size = new System.Drawing.Size(118, 17);
             this.ApplicationMemory.Text = "toolStripStatusLabel1";
             // 
             // localtime
@@ -214,18 +217,20 @@
             // Pu
             // 
             this.Pu.AutoSize = true;
-            this.Pu.Location = new System.Drawing.Point(146, 256);
+            this.Pu.Location = new System.Drawing.Point(110, 205);
+            this.Pu.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.Pu.Name = "Pu";
-            this.Pu.Size = new System.Drawing.Size(43, 15);
+            this.Pu.Size = new System.Drawing.Size(35, 12);
             this.Pu.TabIndex = 4;
             this.Pu.Text = "label2";
             this.Pu.Visible = false;
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(68, 188);
+            this.progressBar1.Location = new System.Drawing.Point(51, 150);
+            this.progressBar1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(100, 23);
+            this.progressBar1.Size = new System.Drawing.Size(75, 18);
             this.progressBar1.Step = 1;
             this.progressBar1.TabIndex = 5;
             this.progressBar1.Visible = false;
@@ -248,17 +253,19 @@
             this.GenePanel.Controls.Add(this.Play);
             this.GenePanel.Controls.Add(this.GenerateOrSave);
             this.GenePanel.Controls.Add(this.Codeinput);
-            this.GenePanel.Location = new System.Drawing.Point(460, 140);
+            this.GenePanel.Location = new System.Drawing.Point(345, 112);
+            this.GenePanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.GenePanel.Name = "GenePanel";
-            this.GenePanel.Size = new System.Drawing.Size(235, 472);
+            this.GenePanel.Size = new System.Drawing.Size(176, 378);
             this.GenePanel.TabIndex = 7;
             // 
             // Dxf_Sector_morse
             // 
             this.Dxf_Sector_morse.AutoSize = true;
-            this.Dxf_Sector_morse.Location = new System.Drawing.Point(22, 251);
+            this.Dxf_Sector_morse.Location = new System.Drawing.Point(16, 201);
+            this.Dxf_Sector_morse.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.Dxf_Sector_morse.Name = "Dxf_Sector_morse";
-            this.Dxf_Sector_morse.Size = new System.Drawing.Size(67, 15);
+            this.Dxf_Sector_morse.Size = new System.Drawing.Size(53, 12);
             this.Dxf_Sector_morse.TabIndex = 16;
             this.Dxf_Sector_morse.Text = "円弧生成";
             this.Dxf_Sector_morse.Click += new System.EventHandler(this.Dxf_Sector_morse_Click);
@@ -267,21 +274,22 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label2.Location = new System.Drawing.Point(141, 51);
+            this.label2.Location = new System.Drawing.Point(106, 41);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(63, 20);
+            this.label2.Size = new System.Drawing.Size(51, 16);
             this.label2.TabIndex = 15;
             this.label2.Text = "label2";
             // 
             // trackBar2
             // 
             this.trackBar2.LargeChange = 10;
-            this.trackBar2.Location = new System.Drawing.Point(123, 185);
+            this.trackBar2.Location = new System.Drawing.Point(92, 148);
             this.trackBar2.Margin = new System.Windows.Forms.Padding(0);
             this.trackBar2.Maximum = 2000;
             this.trackBar2.Minimum = 200;
             this.trackBar2.Name = "trackBar2";
-            this.trackBar2.Size = new System.Drawing.Size(139, 56);
+            this.trackBar2.Size = new System.Drawing.Size(104, 45);
             this.trackBar2.SmallChange = 100;
             this.trackBar2.TabIndex = 14;
             this.trackBar2.TickFrequency = 1000;
@@ -292,21 +300,22 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label1.Location = new System.Drawing.Point(218, 89);
+            this.label1.Location = new System.Drawing.Point(164, 71);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(63, 20);
+            this.label1.Size = new System.Drawing.Size(51, 16);
             this.label1.TabIndex = 13;
             this.label1.Text = "label1";
             // 
             // trackBar1
             // 
             this.trackBar1.LargeChange = 10;
-            this.trackBar1.Location = new System.Drawing.Point(165, 161);
+            this.trackBar1.Location = new System.Drawing.Point(124, 129);
             this.trackBar1.Margin = new System.Windows.Forms.Padding(0);
             this.trackBar1.Maximum = 100;
             this.trackBar1.Minimum = 10;
             this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(139, 56);
+            this.trackBar1.Size = new System.Drawing.Size(104, 45);
             this.trackBar1.SmallChange = 10;
             this.trackBar1.TabIndex = 12;
             this.trackBar1.TabStop = false;
@@ -317,9 +326,10 @@
             // Generate_Image
             // 
             this.Generate_Image.AutoSize = true;
-            this.Generate_Image.Location = new System.Drawing.Point(19, 161);
+            this.Generate_Image.Location = new System.Drawing.Point(14, 129);
+            this.Generate_Image.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.Generate_Image.Name = "Generate_Image";
-            this.Generate_Image.Size = new System.Drawing.Size(118, 15);
+            this.Generate_Image.Size = new System.Drawing.Size(94, 12);
             this.Generate_Image.TabIndex = 11;
             this.Generate_Image.Text = "画像を生成(保存)";
             this.Generate_Image.Click += new System.EventHandler(this.Generate_Image_Click);
@@ -328,9 +338,10 @@
             // 
             this.ResetCode.AutoSize = true;
             this.ResetCode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.ResetCode.Location = new System.Drawing.Point(43, 125);
+            this.ResetCode.Location = new System.Drawing.Point(32, 100);
+            this.ResetCode.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.ResetCode.Name = "ResetCode";
-            this.ResetCode.Size = new System.Drawing.Size(72, 15);
+            this.ResetCode.Size = new System.Drawing.Size(56, 12);
             this.ResetCode.TabIndex = 3;
             this.ResetCode.Text = "リセットする";
             this.ResetCode.Click += new System.EventHandler(this.ResetCode_Click);
@@ -338,9 +349,10 @@
             // Play
             // 
             this.Play.AutoSize = true;
-            this.Play.Location = new System.Drawing.Point(225, 125);
+            this.Play.Location = new System.Drawing.Point(169, 100);
+            this.Play.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.Play.Name = "Play";
-            this.Play.Size = new System.Drawing.Size(37, 15);
+            this.Play.Size = new System.Drawing.Size(29, 12);
             this.Play.TabIndex = 2;
             this.Play.Text = "再生";
             this.Play.Click += new System.EventHandler(this.Play_Click);
@@ -348,9 +360,10 @@
             // GenerateOrSave
             // 
             this.GenerateOrSave.AutoSize = true;
-            this.GenerateOrSave.Location = new System.Drawing.Point(38, 90);
+            this.GenerateOrSave.Location = new System.Drawing.Point(28, 72);
+            this.GenerateOrSave.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.GenerateOrSave.Name = "GenerateOrSave";
-            this.GenerateOrSave.Size = new System.Drawing.Size(133, 15);
+            this.GenerateOrSave.Size = new System.Drawing.Size(106, 12);
             this.GenerateOrSave.TabIndex = 1;
             this.GenerateOrSave.Text = "テキストを生成(保存)";
             this.GenerateOrSave.Click += new System.EventHandler(this.GenerateOrSave_Click);
@@ -358,11 +371,12 @@
             // Codeinput
             // 
             this.Codeinput.ImeMode = System.Windows.Forms.ImeMode.Alpha;
-            this.Codeinput.Location = new System.Drawing.Point(22, 24);
+            this.Codeinput.Location = new System.Drawing.Point(16, 19);
+            this.Codeinput.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Codeinput.Multiline = true;
             this.Codeinput.Name = "Codeinput";
             this.Codeinput.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
-            this.Codeinput.Size = new System.Drawing.Size(240, 45);
+            this.Codeinput.Size = new System.Drawing.Size(181, 37);
             this.Codeinput.TabIndex = 0;
             this.Codeinput.TabStop = false;
             this.Codeinput.WordWrap = false;
@@ -380,9 +394,10 @@
             this.TitlePanel.Controls.Add(this.Pu);
             this.TitlePanel.Controls.Add(this.progressBar1);
             this.TitlePanel.Controls.Add(this.Title);
-            this.TitlePanel.Location = new System.Drawing.Point(0, 30);
+            this.TitlePanel.Location = new System.Drawing.Point(0, 24);
+            this.TitlePanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.TitlePanel.Name = "TitlePanel";
-            this.TitlePanel.Size = new System.Drawing.Size(427, 326);
+            this.TitlePanel.Size = new System.Drawing.Size(320, 261);
             this.TitlePanel.TabIndex = 4;
             // 
             // Quizpanel
@@ -397,18 +412,19 @@
             this.Quizpanel.Controls.Add(this.label3);
             this.Quizpanel.Controls.Add(this.textBox2);
             this.Quizpanel.Controls.Add(this.Question);
-            this.Quizpanel.Location = new System.Drawing.Point(444, 218);
+            this.Quizpanel.Location = new System.Drawing.Point(333, 174);
+            this.Quizpanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Quizpanel.Name = "Quizpanel";
-            this.Quizpanel.Size = new System.Drawing.Size(499, 228);
+            this.Quizpanel.Size = new System.Drawing.Size(374, 182);
             this.Quizpanel.TabIndex = 8;
             // 
             // MCode
             // 
             this.MCode.BackColor = System.Drawing.Color.White;
-            this.MCode.Location = new System.Drawing.Point(71, 183);
+            this.MCode.Location = new System.Drawing.Point(53, 146);
             this.MCode.Margin = new System.Windows.Forms.Padding(0);
             this.MCode.Name = "MCode";
-            this.MCode.Size = new System.Drawing.Size(255, 38);
+            this.MCode.Size = new System.Drawing.Size(191, 30);
             this.MCode.TabIndex = 6;
             this.MCode.TabStop = false;
             // 
@@ -416,17 +432,19 @@
             // 
             this.Debugger.AutoSize = true;
             this.Debugger.Location = new System.Drawing.Point(0, 0);
+            this.Debugger.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.Debugger.Name = "Debugger";
-            this.Debugger.Size = new System.Drawing.Size(68, 15);
+            this.Debugger.Size = new System.Drawing.Size(54, 12);
             this.Debugger.TabIndex = 7;
             this.Debugger.Text = "デバッガ―";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(13, 63);
+            this.label7.Location = new System.Drawing.Point(10, 50);
+            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(111, 15);
+            this.label7.Size = new System.Drawing.Size(88, 12);
             this.label7.TabIndex = 6;
             this.label7.Text = "セルフチェック方式";
             this.label7.Visible = false;
@@ -434,9 +452,10 @@
             // Dontunderstand
             // 
             this.Dontunderstand.AutoSize = true;
-            this.Dontunderstand.Location = new System.Drawing.Point(311, 146);
+            this.Dontunderstand.Location = new System.Drawing.Point(233, 117);
+            this.Dontunderstand.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.Dontunderstand.Name = "Dontunderstand";
-            this.Dontunderstand.Size = new System.Drawing.Size(89, 15);
+            this.Dontunderstand.Size = new System.Drawing.Size(71, 12);
             this.Dontunderstand.TabIndex = 5;
             this.Dontunderstand.Text = "分からない(N)";
             this.Dontunderstand.Click += new System.EventHandler(this.Dontunderstand_Click);
@@ -445,9 +464,10 @@
             // 
             this.Codeunder.AutoSize = true;
             this.Codeunder.Font = new System.Drawing.Font("MS UI Gothic", 28.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.Codeunder.Location = new System.Drawing.Point(238, 81);
+            this.Codeunder.Location = new System.Drawing.Point(178, 65);
+            this.Codeunder.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.Codeunder.Name = "Codeunder";
-            this.Codeunder.Size = new System.Drawing.Size(71, 47);
+            this.Codeunder.Size = new System.Drawing.Size(59, 38);
             this.Codeunder.TabIndex = 4;
             this.Codeunder.Text = ".-_";
             this.Codeunder.Visible = false;
@@ -455,9 +475,10 @@
             // Understand
             // 
             this.Understand.AutoSize = true;
-            this.Understand.Location = new System.Drawing.Point(186, 146);
+            this.Understand.Location = new System.Drawing.Point(140, 117);
+            this.Understand.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.Understand.Name = "Understand";
-            this.Understand.Size = new System.Drawing.Size(65, 15);
+            this.Understand.Size = new System.Drawing.Size(52, 12);
             this.Understand.TabIndex = 3;
             this.Understand.Text = "分かる(C)";
             this.Understand.Click += new System.EventHandler(this.Understand_Click);
@@ -465,18 +486,20 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(13, 35);
+            this.label3.Location = new System.Drawing.Point(10, 28);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(67, 15);
+            this.label3.Size = new System.Drawing.Size(53, 12);
             this.label3.TabIndex = 2;
             this.label3.Text = "質問形式";
             this.label3.Visible = false;
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(382, 183);
+            this.textBox2.Location = new System.Drawing.Point(286, 146);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 22);
+            this.textBox2.Size = new System.Drawing.Size(76, 19);
             this.textBox2.TabIndex = 1;
             this.textBox2.Visible = false;
             // 
@@ -484,36 +507,40 @@
             // 
             this.Question.AutoSize = true;
             this.Question.Font = new System.Drawing.Font("MS UI Gothic", 28.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.Question.Location = new System.Drawing.Point(210, 31);
+            this.Question.Location = new System.Drawing.Point(158, 25);
+            this.Question.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.Question.Name = "Question";
-            this.Question.Size = new System.Drawing.Size(51, 47);
+            this.Question.Size = new System.Drawing.Size(42, 38);
             this.Question.TabIndex = 0;
             this.Question.Text = "A";
             // 
             // Dakenrensyuu
             // 
             this.Dakenrensyuu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.Dakenrensyuu.Location = new System.Drawing.Point(570, 50);
+            this.Dakenrensyuu.Location = new System.Drawing.Point(428, 40);
+            this.Dakenrensyuu.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Dakenrensyuu.Name = "Dakenrensyuu";
-            this.Dakenrensyuu.Size = new System.Drawing.Size(200, 100);
+            this.Dakenrensyuu.Size = new System.Drawing.Size(150, 80);
             this.Dakenrensyuu.TabIndex = 9;
             this.Dakenrensyuu.Visible = false;
             this.Dakenrensyuu.Click += new System.EventHandler(this.Dakenrensyuu_Click);
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(444, 39);
+            this.pictureBox1.Location = new System.Drawing.Point(333, 31);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(100, 50);
+            this.pictureBox1.Size = new System.Drawing.Size(75, 40);
             this.pictureBox1.TabIndex = 10;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Visible = false;
             // 
             // pictureBox2
             // 
-            this.pictureBox2.Location = new System.Drawing.Point(184, 373);
+            this.pictureBox2.Location = new System.Drawing.Point(138, 298);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(100, 50);
+            this.pictureBox2.Size = new System.Drawing.Size(75, 40);
             this.pictureBox2.TabIndex = 11;
             this.pictureBox2.TabStop = false;
             // 
@@ -525,9 +552,9 @@
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(600, 360);
             this.Controls.Add(this.GenePanel);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.Quizpanel);
@@ -538,6 +565,7 @@
             this.Controls.Add(this.toolStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.ImeMode = System.Windows.Forms.ImeMode.Alpha;
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "Form1";
